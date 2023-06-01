@@ -2,7 +2,7 @@
 <html>
   
   <head>
-    <link rel="stylesheet" href="files/styleSheet.css">
+    <link rel="stylesheet" href="https://reuvenrey.github.io/me/files/styleSheet.css">
     <link rel="icon" type="image/x-icon" href="files/images/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Me | Reuven Reyman</title>
@@ -15,6 +15,19 @@
       background-size: cover;
       background-attachment: fixed;
     }
+    
+    #navBar{
+    	width:100%; background-color: rgba(255,255,255,0.6); min-height:60px;
+        margin:auto; margin-top:20px; margin-bottom:20px;
+        border-radius:10px; text-align:center; border:white solid 2px;
+        max-width:1198px;
+    }
+    #navBar button{
+    font-variant:caps;text-align:center;vertical-align:middle;transition:0.3s;
+    background:none;border:none;font-size:18px;height:58px;padding:10px;margin:0;
+    color:white;width:19%;min-width:40px;min-width:140px;
+    }
+    #navBar button:hover{background:white;cursor:pointer;color:purple;}
   </style>
   
 <body>
@@ -24,6 +37,14 @@
       <h1>Reuven Reyman</h1>
       <p>Welcome to my portfolio. Thank you for taking some time to learn about me.</p>
     </div>
+  </div>
+  
+  <div id='navBar'>
+  	<button>HOME</button>
+    <button>EXPERIENCE</button>
+    <button>SKILLS</button>
+    <button>PROJECTS</button>
+    <button>CONTACT</button>
   </div>
 
 </body>
