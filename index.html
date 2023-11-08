@@ -24,10 +24,11 @@
     .columnContainer img{width:28%; margin:1%; scale:1; border-radius:10px; align-self:stretch;}
     .columnContainer div{width:68%; padding:0; margin:2%; align-self:stretch;}
 
-    a{cursor:pointer; text-decoration:underline; color:white; transition:0.3s;}
-    a:hover{color:gray;}
+    .navBar a {display:inline-block; margin:15px; font-size:18px; font-weight:bold; line-height:30px; color:black; text-decoration:none;}
+    .navBar a:hover{color:gray;}
 
-    #navBar a {display:inline-block; margin:15px; font-size:20px; font-weight:bold; line-height:30px;}
+    a {color:white; cursor:pointer;}
+
   </style>
   
 <body>
@@ -36,9 +37,10 @@
     <div class='container' style='color:black;'>
       <h1>Reuven Reyman</h1>
       <p>Welcome to my portfolio. Thank you for taking some time to learn about me.</p>
-      <p style='width:full; text-align:center;' class='navBar'><a>Work Experience</a> | <a>Projects</a> | <a>Skills</a> | <a>Education</a>
     </div>
   </div>
+
+
 
   <div class='columnContainer'>
       <img src='https://yt3.googleusercontent.com/ytc/AOPolaS7pVowyT8MlEB1s-pJaiDaJJYuyIrdg4ZpoR1dWwY=s900-c-k-c0x00ffffff-no-rj'>
@@ -46,6 +48,13 @@
         Hello! I'm Reuven Reyman and this is my online portfolio. I am currently an undergraduate student at the <a href='https://ucsd.edu/'>University of California San Diego</a>. I am pursuing a Bachelors of Science in Mechanical Engineering with a specialization on Controls and Robotics.
         <p>I've been invested in engineering since a young age, working on dozens of personal projects and spending my highschool years in a Science and Technology magnet surrounded by students like me.</p>
       </div>
+  </div>
+
+    <br><br>
+
+  <div class='fullContainer' style='background-color:white;'>
+          <p style='width:full; text-align:center; color:black;' class='navBar'><a href='experience'>Work Experience</a> | <a href='projects'>Projects</a> | <a href='skills'>Skills</a> | <a href='education'>Education</a>
+          </p>
   </div>
   
 </body>
