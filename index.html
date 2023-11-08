@@ -14,38 +14,36 @@
       background-repeat: no-repeat;
       background-size: cover;
       background-attachment: fixed;
+      color:white;
+      font-size:15px;
+      line-height:25px;
+      font-family: Verdana, sans-serif;
     }
     
-    #navBar{
-    	width:100%; background-color: rgba(255,255,255,0.6); min-height:60px;
-        margin:auto; margin-top:20px; margin-bottom:20px;
-        border-radius:10px; text-align:center; border:white solid 2px;
-        max-width:1198px;
-    }
-    #navBar button{
-    font-variant:caps;text-align:center;vertical-align:middle;transition:0.3s;
-    background:none;border:none;font-size:18px;height:58px;padding:10px;margin:0;
-    color:white;width:19%;min-width:40px;min-width:140px;
-    }
-    #navBar button:hover{background:white;cursor:pointer;color:purple;}
+    .columnContainer{display:flex; flex-flow:row; margin:auto; margin-top:40px; width:100%; max-width:1000px;}
+    .columnContainer img{width:28%; margin:1%; scale:1; border-radius:10px; align-self:stretch;}
+    .columnContainer div{width:68%; padding:0; margin:2%; align-self:stretch;}
+
+    a{cursor:pointer; text-decoration:underline; color:white; transition:0.3s;}
+    a:hover{color:gray;}
   </style>
   
 <body>
 
   <div class='fullContainer' style='background-color:white; min-height:40%; margin-top:20px;'> 
-    <div class='container' >
+    <div class='container' style='color:black;'>
       <h1>Reuven Reyman</h1>
       <p>Welcome to my portfolio. Thank you for taking some time to learn about me.</p>
     </div>
   </div>
-  
-  <div id='navBar'>
-  	<button>HOME</button>
-    <button>EXPERIENCE</button>
-    <button>SKILLS</button>
-    <button>PROJECTS</button>
-    <button>CONTACT</button>
-  </div>
 
+  <div class='columnContainer'>
+      <img src='https://yt3.googleusercontent.com/ytc/AOPolaS7pVowyT8MlEB1s-pJaiDaJJYuyIrdg4ZpoR1dWwY=s900-c-k-c0x00ffffff-no-rj'>
+      <div>
+        Hello! I'm Reuven Reyman and this is my online portfolio. I am currently an undergraduate student at the <a href='https://ucsd.edu/'>University of California San Diego</a>. I am pursuing a Bachelors of Science in Mechanical Engineering with a specialization on Controls and Robotics.
+        <p>I've been invested in engineering since a young age, working on dozens of personal projects and spending my highschool years in a Science and Technology magnet surrounded by students like me.</p>
+      </div>
+  </div>
+  
 </body>
 </html>
