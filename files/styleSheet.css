@@ -17,7 +17,7 @@ html {
     }
     
     .columnContainer{display:flex; flex-flow:row; margin:auto; margin-top:40px; width:100%; max-width:1000px;}
-    .columnContainer img{width:28%; margin:1%; scale:1; border-radius:10px; align-self:stretch;}
+    .columnContainer img{width:28%; margin:1%; scale:1; border-radius:10px; align-self:stretch; object-size:cover;}
     .columnContainer div{width:68%; padding:0; margin:2%; align-self:stretch;}
 
     .navBar a {display:inline-block; margin:15px; font-size:18px; font-weight:bold; line-height:30px; color:black; text-decoration:none;}
