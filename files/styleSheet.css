@@ -46,17 +46,17 @@ html {
 
 
 #loader{
-  position:fixed;
-  top:0; bottom:0; left:0; right:0;
+	position:fixed;
+  	top:0; bottom:0; left:0; right:0;
   
-  background: linear-gradient(-45deg, navy, purple, navy);
+  	background: linear-gradient(-45deg, navy, purple, navy);
 	background-size: 400% 400%;
 	animation: gradient 5s ease infinite;
   
-  opacity: 1;
-  transition: opacity 0;
+  	opacity: 1;
+  	transition: opacity 0.5s;
   
-  z-index:999;
+  	z-index:999;
 }
 
 @keyframes gradient {
