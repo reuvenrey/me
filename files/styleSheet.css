@@ -46,9 +46,9 @@ html {
 
 
 #loader{
-  display:static;
+  position:fixed;
   top:0; bottom:0; left:0; right:0;
-  background:linear-gradient(blue,purple);
+  background:linear-gradient(navy,purple);
   opacity: 1;
   transition: opacity 0.5s;
 }
