@@ -40,3 +40,15 @@ html {
   margin:0;
   padding:12px;
 }
+
+
+
+
+
+#loader{
+  display:static;
+  top:0; bottom:0; left:0; right:0;
+  background:linear-gradient(blue,purple);
+  opacity: 1;
+  transition: opacity 0.5s;
+}
