@@ -9,29 +9,9 @@
   </head>
   
   <style>
-    body{
-      background-image: url("https://images.unsplash.com/photo-1557683316-973673baf926?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Z3JhZGllbnQlMjBiYWNrZ3JvdW5kfGVufDB8fDB8fHww&w=1000&q=80");
-      background-repeat: no-repeat;
-      background-size: cover;
-      background-attachment: fixed;
-      color:white;
-      font-size:15px;
-      line-height:25px;
-      font-family: Verdana, sans-serif;
-    }
-    
-    .columnContainer{display:flex; flex-flow:row; margin:auto; margin-top:40px; width:100%; max-width:1000px;}
-    .columnContainer img{width:28%; margin:1%; scale:1; border-radius:10px; align-self:stretch;}
-    .columnContainer div{width:68%; padding:0; margin:2%; align-self:stretch;}
-
-    .navBar a {display:inline-block; margin:15px; font-size:18px; font-weight:bold; line-height:30px; color:black; text-decoration:none;}
-    .navBar a:hover{color:gray;}
-
-    a {color:white; cursor:pointer;}
-
   </style>
   
-<body>
+<body onload='finishLoad()'><div id='loader'></div><div id='header'></div>
 
   <div class='fullContainer' style='background-color:white; min-height:40%; margin-top:20px;'> 
     <div class='container' style='color:black;'>
@@ -52,6 +32,11 @@
           <p style='width:full; text-align:center; color:black;' class='navBar'><a onclick='history.back()'>Back to previous</a> | <a href='https://reuvenrey.github.io/me'>Home</a>
           </p>
   </div>
+
+   <div id='footer'></div>
   
 </body>
+
+  <script type='text/javascript' src='https://reuvenrey.github.io/me/files/headerScript.js'></script>
+  <script>runHeader();</script>
 </html>
