@@ -51,4 +51,5 @@ html {
   background:linear-gradient(navy,purple);
   opacity: 1;
   transition: opacity 0.5s;
+  z-index:999;
 }
