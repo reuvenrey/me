@@ -23,7 +23,7 @@
 
 
   <div class='container' style='text-align:center;'>
-      <img style='margin:auto; width:80%; max-width:500px; height:auto; border-radius:10px;' src='https://m.media-amazon.com/images/I/71GXe3l14LL._AC_UF1000,1000_QL80_.jpg'>
+      <img style='margin:auto; width:80%; max-width:500px; height:auto; border-radius:10px;' src='https://m.media-amazon.com/images/I/71GXe3l14LL._AC_UF1000,1000_QL80_.jpg' onclick='openLoader()'>
   </div>
 
     <br><br>
@@ -38,5 +38,15 @@
 </body>
 
   <script type='text/javascript' src='https://reuvenrey.github.io/me/files/headerScript.js'></script>
-  <script>runHeader();</script>
+  <script>
+    
+    runHeader();
+
+    openLoader(){
+      document.getElementById("loader").style.display = 'block';
+      document.getElementById("loader").style.opacity = 1;
+
+    }
+  
+  </script>
 </html>
