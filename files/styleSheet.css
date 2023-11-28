@@ -39,7 +39,18 @@ html {
   width:full;
   margin:0;
   padding:12px;
+  margin-top:20px;
+  margin-bottom:20px;
 }
+
+.portholeContainer {
+	display:flex; flex-flow:row; flex-wrap:wrap;
+	align-items:flex-start; justify-content:center;
+}
+.portholeContainer div{width:250px; margin:0; padding:20px; align-self:stretch; text-align:center;}
+.portholeContainer div img{width:210px; height:210px; border-radius:50%; object-fit:cover; transition:0.5s;}
+.portholeContainer div h4{margin-top:5px;}
+.portholeContainer div:hover img{scale:1.05; border-radius:45%;}
 
 
 
