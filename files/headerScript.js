@@ -3,10 +3,15 @@ const loader = document.getElementById("loader");
 const footer = document.getElementById("footer");
 const header = document.getElementById("header");
 
+const linkHead = "https://reuvenrey.github.io/me/";
+const link1 = linkHead + "experience";
+const link2 = linkHead + "projects";
+const link3 = linkHead + "education";
+
 function runHeader(){
   console.log("Creating Header and Footer");
   header.innerHTML = "";
-  header.innerHTML += "<div id='headerBar'> <img src='https://reuvenrey.github.io/me/files/images/favicon.ico'> <a href=''>Contact</a> <a href=''>Projects</a> <a href=''>Experience</a> <a href=''>Skills</a> </div>";
+  header.innerHTML += "<div id='headerBar'> <img src='https://reuvenrey.github.io/me/files/images/favicon.ico' onclick='window.open("+'"'+linkHead+'","_self"'+")'> <a href='"+link1+"'>Contact</a> <a href='"+link2+"'>Projects</a> <a href='"+link1+"'>Experience</a> <a href='"+link3+"'>Education</a> </div>";
 }
 
 function finishLoad(){
