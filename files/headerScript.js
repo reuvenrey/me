@@ -12,7 +12,7 @@ const link4 = linkHead + "contact";
 function runHeader(){
   console.log("Creating Header and Footer");
   header.innerHTML = "<div id='headerSpacer'></div>";
-  header.innerHTML += "<div id='headerBar'> <img id='headerLogo' src='https://reuvenrey.github.io/me/files/images/favicon.ico' onclick='window.open("+'"'+linkHead+'","_self"'+")'> <a href='"+link4+"'>Contact</a> <a href='"+link2+"'>Projects</a> <a href='"+link1+"'>Experience</a> <a href='"+link3+"'>Education</a> </div>";
+  header.innerHTML += "<div id='headerBar'> <div id='headerBox'> <img id='headerLogo' src='https://reuvenrey.github.io/me/files/images/favicon.ico' onclick='window.open("+'"'+linkHead+'","_self"'+")'> <a href='"+link4+"'>Contact</a> <a href='"+link2+"'>Projects</a> <a href='"+link1+"'>Experience</a> <a href='"+link3+"'>Education</a> </div> </div>";
 }
 
 function finishLoad(){
