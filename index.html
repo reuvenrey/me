@@ -26,6 +26,8 @@
   <div class='columnContainer'>
       <img src='https://yt3.googleusercontent.com/ytc/AOPolaS7pVowyT8MlEB1s-pJaiDaJJYuyIrdg4ZpoR1dWwY=s900-c-k-c0x00ffffff-no-rj'>
       <div>
+	<h1 id='scrollText'></h1>
+	<br>
         Hello! I'm Reuven Reyman and this is my online portfolio. I am currently an undergraduate student at the <a href='https://ucsd.edu/'>University of California San Diego</a>. I am pursuing a Bachelors of Science in Mechanical Engineering with a specialization on Controls and Robotics.
         <p>I am a quick learner, an innovative problem-solver, and a forward thinker. </p>
       </div>
@@ -91,5 +93,25 @@
 
 <script type='text/javascript' src='https://reuvenrey.github.io/me/files/headerScript.js'></script>
 <script>runHeader();</script>
+
+<script>
+	const targetText = document.getElementById("scrollText");
+	const textContent = ["I am an Innovator","I am a Creator", "I am a Problem Solver", "I am a Doer", "I am a Leader"];
+	const total = textContent.length - 1;
+	var cur = 0;
+
+	
+	
+	function textScroller(){
+		if(cur < total){
+			cur = cur + 1;
+			targetText.innerHTML = textContent[cur];
+		}else{cur = 0; targetText.innerHTML = textContent[cur];}
+	}
+
+	textScroller();
+
+	setInterval(textScroller, 4000);
+</script>
   
 </html>
