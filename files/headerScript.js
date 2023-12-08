@@ -22,6 +22,8 @@ function runHeader(){
     console.log("Creating Mini-Header");
     header.innerHTML += "<div id='headerBar'><img id='headerLogo' src='https://reuvenrey.github.io/me/files/images/favicon.ico' onclick='window.open("+'"'+linkHead+'","_self"'+")'> <a>&#8681;</a> </div>";
   }
+
+  footer.innerHTML = "<div class='container' style='text-align:center'>&#169; 2023 Reuven Reyman. All Rights Reserved.<p><a href='"+linkhead+"files/image-credits'>Image Credits</a></p></div>";
 } //End of function runHeader()
 
 function resizeHeader(){
