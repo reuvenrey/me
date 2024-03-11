@@ -238,11 +238,9 @@
 
 			// Check if Factor of Safety is a valid number
 				fos = parseFloat(projFOS.value); //Convert FOS input to float: 
-			if(fos == 'NaN' || fos == 0){
-				isGood += 1; projFOS.style.borderColor = "red";	projFOS.style.borderSize = "2px";
-			}else{
-				ui.innerHTML += "<p>Factor of Safety: "+fos+" - Valid Input!</p>"; projFOS.style.borderColor = "black";	projFOS.style.borderSize = "initial";
-			}
+			if(isNaN(fos)){		isGood += 1; projFOS.style.borderColor = "red";	projFOS.style.borderSize = "2px";	} //Check if there is a proper input for the float
+			else if(fos <= 0){	isGood += 1; projFOS.style.borderColor = "red";	projFOS.style.borderSize = "2px";	} // make sure fos is not zero
+			else{			ui.innerHTML += "<p>Factor of Safety: "+fos+" - Valid Input!</p>"; projFOS.style.borderColor = "black";	projFOS.style.borderSize = "initial";	}
 
 			// After all checks complete, check if isGood is still equal to 1
 			if(isGood != 0){
