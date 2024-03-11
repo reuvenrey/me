@@ -20,7 +20,7 @@
 		#projConsole{color:white; padding:15px; position:fixed; bottom:0; left:0; right:0; background:rgba(0,0,0,0.60); height:150px; overflow-y:scroll; border-top:5px solid black; z-index:900;}
 		#projConsole h3{color:white;}
 
-		#projLoader{	position:fixed; top:0;bottom:0;left:0;right:0; transition:0.5s;
+		#projLoader{	position:fixed; top:0;bottom:0;left:0;right:0;
 			   	background: linear-gradient(-45deg, midnightBlue,purple);
 				background-size: 400% 400%;
 				animation: gradient 5s ease infinite;
@@ -197,7 +197,7 @@
 		const stepOneContainer = document.getElementById("stepOneContainer");
 		const initialMenuContainer = document.getElementById("initialMenuContainer");
 		
-
+		var projIterations = 0;
 
 	// STEP ONE - USER INPUTS NECESSARY INFORMATION 
 		function startCode(){
@@ -210,9 +210,11 @@
 		function runStepOne(){
 			ui.style.display = "block";
 			projLoader.style.display = "flex";
+			projLoader.style.opacity = "1";
 			setTimeout(function(){stepOneContainer.style.display = "none";},600);
 			// Write to console
-			ui.innerHTML = "<h3>Project Console</h3>Start Program / Verifying User Inputs";
+			projIterations += 1;
+			ui.innerHTML = "<h3>Project Console - Iteration "+projIterations+"</h3>Start Program / Verifying User Inputs";
 
 			// Gather All Input Elements - document.getElementById("");
 				// Will use .value for variables, and .style.borderColor = "red" to signify invalid inputs
@@ -234,19 +236,19 @@
 			// Validate the information inputed by user
 			var isGood = 0; // If == 0, then code will continue. If > 0, then user will need to check their inputs.
 
-			// Check if Factor of Safety is a Number
-			if(projFOS.value == '' || Number.isInteger(projFOS.value) == 'false'){
-				console.log("isInteger test" + Number.isInteger(projFOS.value));
-				let testVal = /\d+\.\d+/.test(projFOS.value);
-				console.log("Test Val: " + testVal)
-				if(testVal == 'true'){ui.innerHTML += "<p>Factor of safety input is decimal value: "+projFOS.value+"</p>";}
-				else{isGood += 1; projFOS.style.borderColor = "red";}
+			// Check if Factor of Safety is a valid number
+				fos = parseFloat(projFOS.value); //Convert FOS input to float: 
+			if(fos == 'NaN' || fos == 0){
+				isGood += 1; projFOS.style.borderColor = "red";	projFOS.style.borderSize = "2px";
+			}else{
+				ui.innerHTML += "<p>Factor of Safety: "+fos+" - Valid Input!</p>"; projFOS.style.borderColor = "black";	projFOS.style.borderSize = "initial";
 			}
 
 			// After all checks complete, check if isGood is still equal to 1
 			if(isGood != 0){
-				setInterval(function(){ui.innerHTML += "<p style='color:red; font-weight:bold'>Error ( ºΔº ) - There are " + isGood + " invalid inputs. Please check your inputs</p>";projLoader.style.opacity = "0";},500);
-				setInterval(function(){projLoader.style.display="none"; stepOneContainer.style.display = "block";},1000);
+				setTimeout(function(){stepOneContainer.style.display = "block";},600);
+				setTimeout(function(){ui.innerHTML += "<p style='color:red; font-weight:bold'>Error ( ºΔº ) - There are " + isGood + " invalid inputs. Please check your inputs</p>"; projLoader.style.opacity = "0";},1000);
+				setTimeout(function(){projLoader.style.display="none";},1500);
 			}
 			else{
 				ui.innerHTML += "<p style='color:green; font-weight:bold'>All inputs verified ٩(◕‿◕)۶ - Beggining Calculations!</p>";
