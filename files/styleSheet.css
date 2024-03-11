@@ -104,6 +104,12 @@ html {
 	  #headerBar a:hover {text-decoration:underline; color:blue;}
 
 	#headerBox{	padding:0; max-width:1200px; background:none;
+
 		 	margin:auto; margin-top:0; margin-bottom:0;
 		  }
 
+.fadeIn{animation: 0.5s fade_in;}
+@keyframes fade_in{
+	0% {opacity:0;}
+	100%{opacity:1;}
+}
