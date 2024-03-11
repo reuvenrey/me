@@ -203,6 +203,7 @@
 		function startCode(){
 			stepOneContainer.style.display = "block";
 			initialMenuContainer.style.display = "none";
+			console.clear();
 		} //end of function startCode
 
 		// CHECK USER PROVIDED INFORMATION AND MKE SURE ITS VALID
@@ -214,11 +215,44 @@
 			ui.innerHTML = "<h3>Project Console</h3>Start Program / Verifying User Inputs";
 
 			// Gather All Input Elements - document.getElementById("");
-			// Will use .value for variables, and .style.borderColor = "red" to signify invalid inputs
-			const projUnits = document.getElementById("");
-			const 
+				// Will use .value for variables, and .style.borderColor = "red" to signify invalid inputs
+				// All input elements have proj infront of the variable name. These are not the values used in the calculations. Once inputs are validated, they will all be sent to proper varialbles.
+				// I.E. projUnits.value -> units, projMaterial.value -> material
+			// Design Standards
+			const projUnits = document.getElementById("unitsOfMeasure");
+			const projfailureMethod = document.getElementById("failureMethod");
+			const projFOS = document.getElementById("factorOfSafety");
+			const projReliability = document.getElementById("reliability");
+			// Material Properties
+			const projMaterial = document.getElementById("materialChoice");
+			const projSurfaceFinish = document.getElementById("manufacturingStyle");
+			// Geometry
+			const projDdRatio = document.getElementById("Dd-ratio");
+			const projFilletRadius = document.getElementById("filletRadius");
+			// Forces and Loading
+
+			// Validate the information inputed by user
+			var isGood = 0; // If == 0, then code will continue. If > 0, then user will need to check their inputs.
+
+			// Check if Factor of Safety is a Number
+			if(projFOS.value == '' || Number.isInteger(projFOS.value) == 'false'){
+				console.log("isInteger test" + Number.isInteger(projFOS.value));
+				let testVal = /\d+\.\d+/.test(projFOS.value);
+				console.log("Test Val: " + testVal)
+				if(testVal == 'true'){ui.innerHTML += "<p>Factor of safety input is decimal value: "+projFOS.value+"</p>";}
+				else{isGood += 1; projFOS.style.borderColor = "red";}
+			}
+
+			// After all checks complete, check if isGood is still equal to 1
+			if(isGood != 0){
+				setInterval(function(){ui.innerHTML += "<p style='color:red; font-weight:bold'>Error ( ºΔº ) - There are " + isGood + " invalid inputs. Please check your inputs</p>";projLoader.style.opacity = "0";},500);
+				setInterval(function(){projLoader.style.display="none"; stepOneContainer.style.display = "block";},1000);
+			}
+			else{
+				ui.innerHTML += "<p style='color:green; font-weight:bold'>All inputs verified ٩(◕‿◕)۶ - Beggining Calculations!</p>";
+			}
 			
-		}
+		} // End of function runStepOne()
 
 		
 	</script> <!-- end of design project code -->
