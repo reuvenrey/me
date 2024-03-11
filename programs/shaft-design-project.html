@@ -17,20 +17,54 @@
 
 		input, select{padding:10px; cursor:pointer; border: 1px solid black; border-radius:5px; transition:0.5s; min-width:100px; margin:15px;}
 
-		#projConsole{color:white; padding:15px; position:fixed; bottom:0; left:0; right:0; background:rgba(0,0,0,0.60); height:150px; overflow-y:scroll; border-top:5px solid black;}
+		#projConsole{color:white; padding:15px; position:fixed; bottom:0; left:0; right:0; background:rgba(0,0,0,0.60); height:150px; overflow-y:scroll; border-top:5px solid black; z-index:900;}
 		#projConsole h3{color:white;}
+
+		#projLoader{	position:fixed; top:0;bottom:0;left:0;right:0; transition:0.5s;
+			   	background: linear-gradient(-45deg, midnightBlue,purple);
+				background-size: 400% 400%;
+				animation: gradient 5s ease infinite;
+				height: 100vh;
+			    	z-index:890;
+			    	display:flex; align-items:center; justify-content:center;
+			    	display:none;
+			    	animation: fade_in 0.5s;
+			   }
+		#projLoader div{padding:20px; text-align:center;}
+		#projLoader img{display:block; margin:auto; margin-bottom:10px; width:150px; height:150px;}
+		
 
 		.spacer{width:100%; height:2px;}
 
 		.fullContainer{background:white; color:black; animation:fade-in 0.5s;}
 		.fullContainer .container h1, .fullContainer .container h2, .fullContainer .container h3{color:black;}
 		.fullContainer .container a{color:blue;}
+
+
+		table {
+		  	font-family: arial, sans-serif;
+		  	border-collapse: collapse;
+		  	width: 100%;
+		}
+		
+		td, th {
+		 	border: 1px solid #dddddd;
+		  	text-align: left;
+		  	padding: 8px;
+		}
+			tr:nth-child(even) {
+		 	background-color: #dddddd;
+		}
+		table label{display:inline-block; margin-right:15px; text-align:left;}
 	</style>
 
 	<body onload='finishLoad()'><div id='loader'></div><div id='header'></div>
 
+		<!-- Console and Loader Elements -->
 		<div id='projConsole' class='fadeIn' style='display:none;'></div>
+		<div id='projLoader'><div><img src='https://i.gifer.com/ZKZg.gif'><p>Calculating Shaft Diameter. Please see Project Console for status.</p></div></div>
 
+		<!-- Project Header -->
 		<div class='container fadeIn'>
 			<h1>Shaft Design Project</h1>
 			<p>This project was completed as part of my <em>MAE 190 - Design of Machine Elements</em> course at UC San Diego. The purpose of this code is to determine a safe diameter for a mechanical shaft given user provided parameters.</p>
@@ -44,15 +78,105 @@
 		</div>
 
 <!-- STEP ONE -->
-		<div class='fullContainer' id='stepOneContainer' style='display:none'>
+		<div class='fullContainer' id='stepOneContainer' style='display:none; animation: fade_in 0.5s;'>
 			<div class='container'>
-				<h3>User Defined Design Parameters</h3>
+				<h2>User Defined Design Parameters</h2>
 				<p>Please input all necessary information in order to calculate diameter of your circular shaft.</p>
 				
 			</div>
+
+			<style>
+				.parameterContainer{display:flex; flex-flow:row; padding:0; flex-wrap:wrap;}
+				.parameterContainer div{display:flex; width:25%; margin:0; min-width:100px; border:1px solid black; padding:15px; padding-top:20px; padding-bottom:20px; align-self:stretch; align-items:center;}
+				.parameterContainer div input, .parameterContainer div select {width:100%;}
+			</style>
+			
 			<div class='container'>
+				<h3>Design Standards</h3>
+				<div class='parameterContainer'>
+					<div>Units of Measurment</div>
+					<div>
+						<select id='unitsOfMeasure'>
+							<option value='english'>English (lb, psi, in)</option>
+							<option value='standard'>Standard International (N, Pa, m)</option>
+						</select>
+					</div>
+					<div>Method</div>
+					<div>
+						<select id='failureMethod'>
+							<option>DE-Goodman <em>(Default)</em></option>
+						</select>
+					</div>
+					<div>Minimum Factor of Safety</div>
+					<div>
+						<input type='number' placeholder='n' id='factorOfSafety'>
+					</div>
+					<div>Reliability</div>
+					<div>
+						<select id='reliability'>
+							<option value='99.99'>99.99% <em>(Default)</em></option>
+						</select>
+					</div>
+				</div>
+				
+				<h3>Material Properties</h3>
+				<div class='parameterContainer'>
+					<div>Material Choice</div>
+					<div>
+						<select id='materialChoice'>
+							<option value='steel'>Steel</option>
+						</select>
+					</div>
+					<div>Surface Finish</div>
+					<div>
+						<select id='manufacturingStyle'>
+							<option value='ground'>Ground</option>
+							<option value='machined'>Machined</option>
+							<option value='machined'>Cold Drawn</option>
+							<option value='hot-rolled'>Hot-Rolled</option>
+							<option value='As-Forged'>As-Forged</option>
+						</select>
+					</div>
+				</div> <!-- end of MATERIALS parameters-->
+
+				<h3>Part Geometry</h3>
+				<div class='parameterContainer'>
+					<div>D / d Ratio</div>
+					<div>
+						<select id='Dd-ratio'>
+							<option value='10'>1.1 (10%)</option>
+							<option value='20'>1.2 (20%)</option>
+							<option value='30'>1.3 (30%)</option>
+						</select>
+					</div>
+					<div>Fillet Radius</div>
+					<div>
+						<select id='filletRadius'>
+							<option value='10'>10% (Generous)</option>
+							<option value='5'>5% (Sharp)</option>
+							<option value='0'>0% (None)</option>
+						</select>
+					</div>
+				</div> <!-- end of GEOMETRY parameters-->
+
+				<h3>Forces and Loading</h3>
+				<div class='parameterContainer'>
+					<div>D / d Ratio</div>
+					<div>
+						
+					</div>
+					<div>Fillet Radius</div>
+					<div>
+						
+					</div>
+				</div> <!-- end of GEOMETRY parameters-->
 			</div>
-		</div>
+			<div class='container' style='border-top:2px solid black'>
+				<p style='text-align:center'>
+					<button onclick='runStepOne()' style='background:green'>Begin Analysis</button>
+				</p>
+			</div>
+		</div> <!-- end of STEP ONE container -->
 
 		
 
@@ -65,8 +189,9 @@
 	<!-- ------------------------------------------------------------------------------------------- DESIGN PROJECT CODE ----------------------------->
 
 	<script>
-		// Console Container
+		// Console Container and Loader
 		const ui = document.getElementById("projConsole"); // console: 	ui.innerHTML += "";
+		const projLoader = document.getElementById("projLoader");
 
 		// User Variable Input Elements
 		const stepOneContainer = document.getElementById("stepOneContainer");
@@ -74,15 +199,24 @@
 		
 
 
-		// STEP ONE - USER INPUTS NECESSARY INFORMATION 
+	// STEP ONE - USER INPUTS NECESSARY INFORMATION 
 		function startCode(){
 			stepOneContainer.style.display = "block";
 			initialMenuContainer.style.display = "none";
-			
-			
 		} //end of function startCode
 
-		function inputsTwo(){
+		// CHECK USER PROVIDED INFORMATION AND MKE SURE ITS VALID
+		function runStepOne(){
+			ui.style.display = "block";
+			projLoader.style.display = "flex";
+			setTimeout(function(){stepOneContainer.style.display = "none";},600);
+			// Write to console
+			ui.innerHTML = "<h3>Project Console</h3>Start Program / Verifying User Inputs";
+
+			// Gather All Input Elements - document.getElementById("");
+			// Will use .value for variables, and .style.borderColor = "red" to signify invalid inputs
+			const projUnits = document.getElementById("");
+			const 
 			
 		}
 
