@@ -17,7 +17,7 @@
 
 		input, select{padding:10px; cursor:pointer; border: 1px solid black; border-radius:5px; transition:0.5s; min-width:100px; margin:15px;}
 
-		#projConsole{color:white; padding:15px; position:fixed; bottom:0; left:0; right:0; background:rgba(0,0,0,0.60); height:150px; overflow-y:scroll; border-top:5px solid black; z-index:900;}
+		#projConsole{color:white; padding:15px; position:fixed; bottom:0; left:0; right:0; background:rgba(0,0,0,0.60); height:150px; overflow-y:scroll; border-top:5px solid black; z-index:900; transition:0.5s;}
 		#projConsole h3{color:white;}
 
 		#projLoader{	position:fixed; top:0;bottom:0;left:0;right:0;
@@ -28,7 +28,6 @@
 			    	z-index:890;
 			    	display:flex; align-items:center; justify-content:center;
 			    	display:none;
-			    	animation: fade_in 0.5s;
 			   }
 		#projLoader div{padding:20px; text-align:center;}
 		#projLoader img{display:block; margin:auto; margin-bottom:10px; width:150px; height:150px;}
@@ -124,7 +123,7 @@
 					<div>Material Choice</div>
 					<div>
 						<select id='materialChoice'>
-							<option value='steel'>Steel</option>
+							<option value='steel'>Steel (Sy = 50kpsi, Sut = 75kpsi)</option>
 						</select>
 					</div>
 					<div>Surface Finish</div>
@@ -152,22 +151,32 @@
 					<div>Fillet Radius</div>
 					<div>
 						<select id='filletRadius'>
-							<option value='10'>10% (Generous)</option>
-							<option value='5'>5% (Sharp)</option>
 							<option value='0'>0% (None)</option>
+							<option value='5'>2% (Sharp)</option>
+							<option value='10'>10% (Generous)</option>
+							
+							
 						</select>
 					</div>
 				</div> <!-- end of GEOMETRY parameters-->
 
 				<h3>Forces and Loading</h3>
 				<div class='parameterContainer'>
-					<div>D / d Ratio</div>
+					<div>Alternating Torque</div>
 					<div>
-						
+						<input id='torqueA' type='number' placeholder='Ta'>
 					</div>
-					<div>Fillet Radius</div>
+					<div>Mean Torque</div>
 					<div>
-						
+						<input id='torqueM' type='number' placeholder='Tm'>
+					</div>
+					<div>Alternating Moment</div>
+					<div>
+						<input id='momentA' type='number' placeholder='Ma'>
+					</div>
+					<div>Mean Moment</div>
+					<div>
+						<input id='momentM' type='number' placeholder='Mm'>
 					</div>
 				</div> <!-- end of GEOMETRY parameters-->
 			</div>
@@ -199,7 +208,7 @@
 		
 		var projIterations = 0;
 
-	// STEP ONE - USER INPUTS NECESSARY INFORMATION 
+// STEP ONE - USER INPUTS NECESSARY INFORMATION 
 		function startCode(){
 			stepOneContainer.style.display = "block";
 			initialMenuContainer.style.display = "none";
@@ -232,16 +241,32 @@
 			const projDdRatio = document.getElementById("Dd-ratio");
 			const projFilletRadius = document.getElementById("filletRadius");
 			// Forces and Loading
-
+			const projTorqueA = document.getElementById("torqueA");
+			const projMomentA = document.getElementById("momentA");
+			const projTorqueM = document.getElementById("torqueM");
+			const projMomentM = document.getElementById("momentM");
+			
 			// Validate the information inputed by user
 			var isGood = 0; // If == 0, then code will continue. If > 0, then user will need to check their inputs.
 
 			// Check if Factor of Safety is a valid number
 				fos = parseFloat(projFOS.value); //Convert FOS input to float: 
-			if(isNaN(fos)){		isGood += 1; projFOS.style.borderColor = "red";	projFOS.style.borderSize = "2px";	} //Check if there is a proper input for the float
-			else if(fos <= 0){	isGood += 1; projFOS.style.borderColor = "red";	projFOS.style.borderSize = "2px";	} // make sure fos is not zero
-			else{			ui.innerHTML += "<p>Factor of Safety: "+fos+" - Valid Input!</p>"; projFOS.style.borderColor = "black";	projFOS.style.borderSize = "initial";	}
+			if(isNaN(fos)){		isGood += 1; projFOS.style.borderColor = "red";	projFOS.style.borderWidth = "2px";	ui.innerHTML += "<p style='color:orange'>Invalid Factor of Safety</p>";} //Check if there is a proper input for the float
+			else if(fos < 1){	isGood += 1; projFOS.style.borderColor = "red";	projFOS.style.borderWidth = "2px"; ui.innerHTML += "<p style='color:orange'>Factor of Safety is too Small</p>";} // make sure fos is not less than 1
+			else{			ui.innerHTML += "<p>Factor of Safety: "+fos+" - Valid Input!</p>"; projFOS.style.borderColor = "black";	projFOS.style.borderWidth = "initial";	}
 
+			// Check if forces are valid (number values)
+			torqueA = parseFloat(projTorqueA.value);
+			torqueM = parseFloat(projTorqueM.value);
+			momentA = parseFloat(projMomentA.value);
+			momentM = parseFloat(projMomentM.value);
+			if(isNaN(torqueA)){	isGood += 1;	projTorqueA.style.borderColor = "red";	projTorqueA.style.borderWidth = "2px"; ui.innerHTML += "<p style='color:orange'>Invalid Alternating Torque</p>"; }else{	projTorqueA.style.borderColor = "black";	projTorqueA.style.borderWidth = "1px";}
+			if(isNaN(torqueM)){	isGood += 1;	projTorqueM.style.borderColor = "red";	projTorqueM.style.borderWidth = "2px"; ui.innerHTML += "<p style='color:orange'>Invalid Mean Torque</p>"; }else{	projTorqueM.style.borderColor = "black";	projTorqueM.style.borderWidth = "1px";}
+			if(isNaN(momentA)){	isGood += 1;	projMomentA.style.borderColor = "red";	projMomentA.style.borderWidth = "2px"; ui.innerHTML += "<p style='color:orange'>Invalid Alternating Moment</p>"; }else{	projMomentA.style.borderColor = "black";	projMomentA.style.borderWidth = "1px";}
+			if(isNaN(momentM)){	isGood += 1;	projMomentM.style.borderColor = "red";	projMomentM.style.borderWidth = "2px"; ui.innerHTML += "<p style='color:orange'>Invalid Mean Moment</p>"; }else{	projMomentM.style.borderColor = "black";	projMomentM.style.borderWidth = "1px";}
+
+			
+			
 			// After all checks complete, check if isGood is still equal to 1
 			if(isGood != 0){
 				setTimeout(function(){stepOneContainer.style.display = "block";},600);
@@ -249,16 +274,62 @@
 				setTimeout(function(){projLoader.style.display="none";},1500);
 			}
 			else{
-				ui.innerHTML += "<p style='color:green; font-weight:bold'>All inputs verified ٩(◕‿◕)۶ - Beggining Calculations!</p>";
+				// All var good, cotinue with code!
+				setTimeout(function(){ui.innerHTML += "<p style='color:green; font-weight:bold'>All inputs verified ٩(◕‿◕)۶ - Beggining Calculations!</p>"; runStepTwo();},1500);
 			}
 			
 		} // End of function runStepOne()
 
+
+// STEP TWO - ALL INPUTS ARE GATHERED
+
+		//fos
+		//torqueA
+		//torqueM
+		//momentA
+		//momentM
+
+		units = document.getElementById("unitsOfMeasure").value;
+		failureMethod = document.getElementById("failureMethod").value;
+		reliability = document.getElementById("reliability").value;
+		materialChoice = document.getElementById("materialChoice").value;
+		surfaceFinish = document.getElementById("manufacturingStyle").value;
+		Dd_ratio = document.getElementById("Dd-ratio").value;
+		filletRadius = document.getElementById("filletRadius").value;
 		
-	</script> <!-- end of design project code -->
+
+		function runStepTwo(){
+
+			// (1) Display the variables
+			let variableString = [units, failureMethod, reliability, materialChoice, surfaceFinish, Dd_ratio, filletRadius, fos, torqueA, torqueM, momentA, momentM];
+			let variableName = ["Units","Failure Method", "Reliability", "Material Choice","Surface Finish","D/d Ratio", "Fillet Radius", "Factor of Safety", "Alternating Torque", "Mean Torque", "Alternating Moment", "Mean Moment"];
+
+			i = 0;
+			ui.innerHTML += "<p>Variables Used for Calculation: <ul>";
+			ui.style.height = "40vh";
+			while(i < variableString.length){
+				ui.innerHTML += "<li>" + variableName[i] + ": " + variableString[i] + "</li>";
+				i += 1;
+			}
+			ui.innerHTML += "</ul></p>";
+
+			// (2) Begin the Problem Solving Process
 
 
 
+
+
+
+
+
+
+
+
+
+			
+		}
+		
+	</script>
 
 	
 
