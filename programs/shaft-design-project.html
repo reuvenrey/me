@@ -113,7 +113,12 @@
 					<div>Reliability</div>
 					<div>
 						<select id='reliability'>
-							<option value='99.99'>99.99% <em>(Default)</em></option>
+							<option value='0.702'>99.99% (ke = 0.702)</option>
+							<option value='0.753'>99.9% (ke = 0.753)</option>
+							<option value='0.814'>99% (ke = 0.814)</option>
+							<option value='0.868'>95% (ke = 0.868</option>
+							<option value='0.897'>90% (ke = 897)</option>
+							<option value='1.000'>50% (ke = 1.00)</option>
 						</select>
 					</div>
 				</div>
@@ -133,7 +138,7 @@
 							<option value='machined'>Machined</option>
 							<option value='machined'>Cold Drawn</option>
 							<option value='hot-rolled'>Hot-Rolled</option>
-							<option value='As-Forged'>As-Forged</option>
+							<option value='as-forged'>As-Forged</option>
 						</select>
 					</div>
 				</div> <!-- end of MATERIALS parameters-->
@@ -143,17 +148,17 @@
 					<div>D / d Ratio</div>
 					<div>
 						<select id='Dd-ratio'>
-							<option value='10'>1.1 (10%)</option>
-							<option value='20'>1.2 (20%)</option>
-							<option value='30'>1.3 (30%)</option>
+							<option value='1.1'>1.1 (10%)</option>
+							<option value='1.2'>1.2 (20%)</option>
+							<option value='1.3'>1.3 (30%)</option>
 						</select>
 					</div>
 					<div>Fillet Radius</div>
 					<div>
 						<select id='filletRadius'>
 							<option value='0'>0% (None)</option>
-							<option value='5'>2% (Sharp)</option>
-							<option value='10'>10% (Generous)</option>
+							<option value='0.02'>2% (Sharp)</option>
+							<option value='0.10'>10% (Generous)</option>
 							
 							
 						</select>
@@ -295,8 +300,8 @@
 		reliability = document.getElementById("reliability").value;
 		materialChoice = document.getElementById("materialChoice").value;
 		surfaceFinish = document.getElementById("manufacturingStyle").value;
-		Dd_ratio = document.getElementById("Dd-ratio").value;
-		filletRadius = document.getElementById("filletRadius").value;
+		Dd_ratio = parseFloat(document.getElementById("Dd-ratio").value);
+		filletRadius = parseFloat(document.getElementById("filletRadius").value);
 		
 
 		function runStepTwo(){
