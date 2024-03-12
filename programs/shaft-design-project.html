@@ -256,6 +256,7 @@
 			const projMomentA = document.getElementById("momentA");
 			const projTorqueM = document.getElementById("torqueM");
 			const projMomentM = document.getElementById("momentM");
+			const projTemp = document.getElementById("temp");
 			
 			// Validate the information inputed by user
 			var isGood = 0; // If == 0, then code will continue. If > 0, then user will need to check their inputs.
@@ -267,6 +268,15 @@
 			else if(fos > 15){	isGood += 1; projFOS.style.borderColor = "red";	projFOS.style.borderWidth = "2px"; ui.innerHTML += "<p style='color:orange'>Factor of Safety is too Large</p>";} // make sure fos is not greater than 15
 			else{			ui.innerHTML += "<p>Factor of Safety: "+fos+" - Valid Input!</p>"; projFOS.style.borderColor = "black";	projFOS.style.borderWidth = "initial";	}
 
+			// Check Temperature Input
+			if(projTemp.value != "RT"){
+				temp = parseFloat(projTemp.value); // Convert temperature to float
+				if(isNaN(temp)){
+					isGood += 1; projTemp.style.borderColor = "red";	projTemp.style.borderWidth = "2px"; ui.innerHTML += "<p style='color:orange'>Temperature Invalid, must be number value OR 'RT'</p>";
+				}
+				else if(temp > 1000 || temp < -1000){ui.innerHTML += "<p style='color:gold'>Extreme Temperature - Results may be less accurate</p>";}
+			}else{temp = 'RT'; projTemp.style.borderColor = "black";projTemp.style.borderWidth = "initial";}
+			
 			// Check if forces are valid (number values)
 			torqueA = parseFloat(projTorqueA.value);
 			torqueM = parseFloat(projTorqueM.value);
@@ -300,6 +310,9 @@
 		//torqueM
 		//momentA
 		//momentM
+		//temp
+
+		if(temp == 'RT'){const tempA = "Room Temperature";}else{const tempA = temp;}
 
 		units = document.getElementById("unitsOfMeasure").value;
 		failureMethod = document.getElementById("failureMethod").value;
@@ -313,8 +326,8 @@
 		function runStepTwo(){
 
 			// (1) Display the variables
-			let variableString = [units, failureMethod, reliability, materialChoice, surfaceFinish, Dd_ratio, filletRadius, fos, torqueA, torqueM, momentA, momentM];
-			let variableName = ["Units","Failure Method", "Reliability", "Material Choice","Surface Finish","D/d Ratio", "Fillet Radius", "Factor of Safety", "Alternating Torque", "Mean Torque", "Alternating Moment", "Mean Moment"];
+			let variableString = [units, failureMethod, reliability, materialChoice, surfaceFinish, Dd_ratio, filletRadius, fos, tempA, torqueA, torqueM, momentA, momentM];
+			let variableName = ["Units","Failure Method", "Reliability", "Material Choice","Surface Finish","D/d Ratio", "Fillet Radius", "Factor of Safety", "Operating Temperature","Alternating Torque", "Mean Torque", "Alternating Moment", "Mean Moment"];
 
 			i = 0;
 			ui.innerHTML += "<p>Variables Used for Calculation: <ul>";
