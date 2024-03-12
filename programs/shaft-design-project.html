@@ -253,6 +253,7 @@
 				fos = parseFloat(projFOS.value); //Convert FOS input to float: 
 			if(isNaN(fos)){		isGood += 1; projFOS.style.borderColor = "red";	projFOS.style.borderWidth = "2px";	ui.innerHTML += "<p style='color:orange'>Invalid Factor of Safety</p>";} //Check if there is a proper input for the float
 			else if(fos < 1){	isGood += 1; projFOS.style.borderColor = "red";	projFOS.style.borderWidth = "2px"; ui.innerHTML += "<p style='color:orange'>Factor of Safety is too Small</p>";} // make sure fos is not less than 1
+			else if(fos > 15){	isGood += 1; projFOS.style.borderColor = "red";	projFOS.style.borderWidth = "2px"; ui.innerHTML += "<p style='color:orange'>Factor of Safety is too Large</p>";} // make sure fos is not greater than 15
 			else{			ui.innerHTML += "<p>Factor of Safety: "+fos+" - Valid Input!</p>"; projFOS.style.borderColor = "black";	projFOS.style.borderWidth = "initial";	}
 
 			// Check if forces are valid (number values)
