@@ -324,10 +324,10 @@
 		function runStepTwo(){
 
 			// Convert Temp temporarily for display purposes
-			if(temp == 'RT'){const tempA = "Room Temperature";}else{const tempA = temp;}
+			if(temp == 'RT'){$tempA = "Room Temperature";}else{$tempA = temp;}
 
 			// (1) Display the variables
-			let variableString = [units, failureMethod, reliability, materialChoice, surfaceFinish, Dd_ratio, filletRadius, fos, tempA, torqueA, torqueM, momentA, momentM];
+			let variableString = [units, failureMethod, reliability, materialChoice, surfaceFinish, Dd_ratio, filletRadius, fos, $tempA, torqueA, torqueM, momentA, momentM];
 			let variableName = ["Units","Failure Method", "Reliability", "Material Choice","Surface Finish","D/d Ratio", "Fillet Radius", "Factor of Safety", "Operating Temperature","Alternating Torque", "Mean Torque", "Alternating Moment", "Mean Moment"];
 
 			i = 0;
