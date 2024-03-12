@@ -312,8 +312,6 @@
 		//momentM
 		//temp
 
-		if(temp == 'RT'){const tempA = "Room Temperature";}else{const tempA = temp;}
-
 		units = document.getElementById("unitsOfMeasure").value;
 		failureMethod = document.getElementById("failureMethod").value;
 		reliability = document.getElementById("reliability").value;
@@ -324,6 +322,9 @@
 		
 
 		function runStepTwo(){
+
+			// Convert Temp temporarily for display purposes
+			if(temp == 'RT'){const tempA = "Room Temperature";}else{const tempA = temp;}
 
 			// (1) Display the variables
 			let variableString = [units, failureMethod, reliability, materialChoice, surfaceFinish, Dd_ratio, filletRadius, fos, tempA, torqueA, torqueM, momentA, momentM];
