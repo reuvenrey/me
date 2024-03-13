@@ -67,12 +67,18 @@
 		<div class='container fadeIn'>
 			<h1>Shaft Design Project</h1>
 			<p>This project was completed as part of my <em>MAE 190 - Design of Machine Elements</em> course at UC San Diego. The purpose of this code is to determine a safe diameter for a mechanical shaft given user provided parameters.</p>
+			<div class='columnContainer'>
+				<img src='https://d2vlcm61l7u1fs.cloudfront.net/media%2F7f9%2F7f94806f-0c5f-4a10-a841-ebfe45b878f2%2Fphp06nuzn.png'>
+				<div>
+					The program I have designed will take a series of User-Provided inputs, including D/d and r/d, and will return the values for D and d based on the loading and desired factor of safety provided. After the initial calculations are performed, the user will be able to adjust their inputs and find the most desirable shaft diameters.
+				</div>
+			</div>
 		</div>
 
 <!-- INITIAL MENU -->
 		<div class='fullContainer' id='initialMenuContainer'>
 			<div class='container'>
-				<button onclick='startCode()'>Run Program</button> | <a href='https://github.com/reuvenrey/programs/blob/main/shaft-design-project.html'>View Code</a>
+				<button onclick='startCode()'>Run Program</button> | <a href='https://github.com/reuvenrey/programs/blob/main/shaft-design-project.html'>View Code</a> | <a>View Design Report (PDF)</a>
 			</div>
 		</div>
 
@@ -100,7 +106,7 @@
 							<option value='standard'>Standard International (N, Pa, m, °C)</option>
 						</select>
 					</div>
-					<div>Method</div>
+					<div><p>Method<br><em style='color:gray'>Only one option for now :(</em></p></div>
 					<div>
 						<select id='failureMethod'>
 							<option>DE-Goodman <em>(Default)</em></option>
@@ -183,7 +189,7 @@
 					<div>
 						<input id='momentM' type='number' placeholder='Mm'>
 					</div>
-					<div>Environmental Temperature<br><em>Use RT for Room Temperature</em></div>
+					<div><p>Environmental Temperature<br><em style='color:orange'>Use RT for Room Temperature</em></p></div>
 					<div>
 						<input id='temp' placeholder='°F / °C'>
 					</div>
