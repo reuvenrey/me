@@ -200,8 +200,14 @@
 					<div>
 						<input id='temp' placeholder='°F / °C'>
 					</div>
-					<div></div>
-					<div></div>
+					<div>Calculation Speed</div>
+					<div>
+						<select id='calcSpeed'>
+							<option value='0'>Fast (Fastest Result)</option>
+							<option value='500'>Medium (Follow Process)</option>
+							<option value='1000'>Slow (For Debuging)</option>
+						</select>
+					</div>
 				</div> <!-- end of GEOMETRY parameters-->
 			</div>
 			<div class='container' style='border-top:2px solid black'>
@@ -244,7 +250,11 @@
 			ui.style.display = "block";
 			projLoader.style.display = "flex";
 			projLoader.style.opacity = "1";
+
+			calcSpeed = parseInt(document.getElementById("calcSpeed").value);
+			
 			setTimeout(function(){stepOneContainer.style.display = "none";},600);
+			
 			// Write to console
 			projIterations += 1;
 			ui.innerHTML = "<h3>Project Console - Iteration "+projIterations+"</h3>Start Program / Verifying User Inputs";
@@ -270,6 +280,7 @@
 			const projTorqueM = document.getElementById("torqueM");
 			const projMomentM = document.getElementById("momentM");
 			const projTemp = document.getElementById("temp");
+
 			
 			// Validate the information inputed by user
 			var isGood = 0; // If == 0, then code will continue. If > 0, then user will need to check their inputs.
@@ -304,13 +315,19 @@
 			
 			// After all checks complete, check if isGood is still equal to 1
 			if(isGood != 0){
-				setTimeout(function(){stepOneContainer.style.display = "block";},600);
-				setTimeout(function(){ui.innerHTML += "<p style='color:red; font-weight:bold'>Error (o_O) - There are " + isGood + " invalid inputs. Please check your inputs</p>"; projLoader.style.opacity = "0";},1000);
-				setTimeout(function(){projLoader.style.display="none";},1500);
+				if(calcSpeed != 0){
+					setTimeout(function(){stepOneContainer.style.display = "block";},650);
+					setTimeout(function(){ui.innerHTML += "<p style='color:red; font-weight:bold'>Error (o_O) - There are " + isGood + " invalid inputs. Please check your inputs</p>"; projLoader.style.opacity = "0";},500);
+					setTimeout(function(){projLoader.style.display="none";},1500);
+				}else{
+					setTimeout(function(){stepOneContainer.style.display = "block";},600);
+					ui.innerHTML += "<p style='color:red; font-weight:bold'>Error (o_O) - There are " + isGood + " invalid inputs. Please check your inputs</p>";
+					projLoader.style.display="none";
+				}
 			}
 			else{
 				// All var good, cotinue with code!
-				setTimeout(function(){ui.innerHTML += "<p style='color:green; font-weight:bold'>All inputs verified ٩(◕‿◕)۶ - Beggining Calculations!</p>"; runStepTwo();},1500);
+				setTimeout(function(){ui.innerHTML += "<p style='color:green; font-weight:bold'>All inputs verified ٩(◕‿◕)۶ - Beggining Calculations!</p>"; runStepTwo();},calcSpeed);
 			}
 			
 		} // End of function runStepOne()
@@ -324,6 +341,7 @@
 		//momentA
 		//momentM
 		//temp
+		//calcSpeed
 
 		units = document.getElementById("unitsOfMeasure").value;
 		failureMethod = document.getElementById("failureMethod").value;
@@ -332,6 +350,7 @@
 		surfaceFinish = document.getElementById("manufacturingStyle").value;
 		Dd_ratio = parseFloat(document.getElementById("Dd-ratio").value);
 		filletRadius = parseFloat(document.getElementById("filletRadius").value);
+		
 		
 
 		function runStepTwo(){
@@ -353,6 +372,10 @@
 			ui.innerHTML += "</ul></p>";
 
 			// (2) Begin the Problem Solving Process
+			
+			// Tip: calcSpeed determines the length of pause between each step (so user can track the code's progress)
+			// for repetative tasks, use myInterval = setInterval(FUNCTION, calcSpeed); to start the repetative process with pauses between each step. 
+			// Then use clearInterval(myInterval); to stop the process
 
 
 
