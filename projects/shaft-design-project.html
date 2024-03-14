@@ -108,7 +108,7 @@
 				<div class='parameterContainer'>
 					<div>Units of Measurment</div>
 					<div>
-						<select id='unitsOfMeasure'>
+						<select id='unitsOfMeasure' onchange='console.log("Value: "+ this.value)'> 
 							<option value='english'>English (lb, psi, in, °F)</option>
 							<option value='standard'>Standard International (N, Pa, m, °C)</option>
 						</select>
@@ -125,7 +125,7 @@
 					</div>
 					<div>Reliability</div>
 					<div>
-						<select id='reliability'>
+						<select id='reliability' onchange='console.log(this.value)'>
 							<option value='0.702'>99.99% (ke = 0.702)</option>
 							<option value='0.753'>99.9% (ke = 0.753)</option>
 							<option value='0.814'>99% (ke = 0.814)</option>
@@ -140,7 +140,7 @@
 				<div class='parameterContainer'>
 					<div>Material Choice</div>
 					<div>
-						<select id='materialChoice'> <!-- Value nomenclature: NAME - SY(KPSI),SY(MPA) - SUT(KPSI),SUT(MPA) -->
+						<select id='materialChoice' onchange='console.log(this.value)'> <!-- Value nomenclature: NAME - SUT(KPSI),SUT(MPA) - SY(KPSI),SY(MPA) -->
 							<option value='1015 HR Steel - 50,340 - 27.5,190'>1015 HR Steel (Su=50,Sy=27.5)</option>
 							<option value='1015 CD Steel - 56,390 - 47,320'>1015 CD Steel (Su=56,Sy=47)</option>
 							<option value='1018 HR Steel - 58,400 - 32,220'>1018 HR Steel (Su=58,Sy=32)</option>
@@ -151,7 +151,7 @@
 					</div>
 					<div>Surface Finish</div>
 					<div>
-						<select id='manufacturingStyle'>
+						<select id='manufacturingStyle' onchange='console.log(this.value)'>
 							<option value='ground'>Ground</option>
 							<option value='machined'>Machined</option>
 							<option value='machined'>Cold Drawn</option>
@@ -165,7 +165,7 @@
 				<div class='parameterContainer'>
 					<div>D / d Ratio</div>
 					<div>
-						<select id='Dd-ratio'>
+						<select id='Dd-ratio' onchange='console.log(this.value)'>
 							<option value='1.1'>1.1 (10%)</option>
 							<option value='1.2'>1.2 (20%)</option>
 							<option value='1.3'>1.3 (30%)</option>
@@ -173,12 +173,9 @@
 					</div>
 					<div>Fillet Radius</div>
 					<div>
-						<select id='filletRadius'>
-							<option value='0'>0% (None)</option>
+						<select id='filletRadius' onchange='console.log("Value: "+ this.value)'>
 							<option value='0.02'>2% (Sharp)</option>
 							<option value='0.10'>10% (Generous)</option>
-							
-							
 						</select>
 					</div>
 				</div> <!-- end of GEOMETRY parameters-->
@@ -207,7 +204,7 @@
 					</div>
 					<div>Calculation Speed</div>
 					<div>
-						<select id='calcSpeed'>
+						<select id='calcSpeed' onchange='console.log("Value: "+ this.value)'>
 							<option value='0'>Fast (Fastest Result)</option>
 							<option value='500'>Medium (Follow Process)</option>
 							<option value='1000'>Slow (For Debuging)</option>
@@ -338,34 +335,36 @@
 		} // End of function runStepOne()
 
 
-// STEP TWO - ALL INPUTS ARE GATHERED
 
-		//fos
-		//torqueA
-		//torqueM
-		//momentA
-		//momentM
-		//temp
-		//calcSpeed
 
-		units = document.getElementById("unitsOfMeasure").value;
-		failureMethod = document.getElementById("failureMethod").value;
-		reliability = document.getElementById("reliability").value;
-		materialChoice = document.getElementById("materialChoice").value;
-		surfaceFinish = document.getElementById("manufacturingStyle").value;
-		Dd_ratio = parseFloat(document.getElementById("Dd-ratio").value);
-		filletRadius = parseFloat(document.getElementById("filletRadius").value);
 		
-		
+
+// STEP TWO - ALL INPUTS ARE GATHEREd
 
 		function runStepTwo(){
+
+			//fos
+			//torqueA
+			//torqueM
+			//momentA
+			//momentM
+			//temp
+			//calcSpeed
+	
+			units = document.getElementById("unitsOfMeasure").value;
+			failureMethod = document.getElementById("failureMethod").value;
+			reliability = document.getElementById("reliability").value;
+			materialChoice = document.getElementById("materialChoice").value;
+			surfaceFinish = document.getElementById("manufacturingStyle").value;
+			Dd_ratio = parseFloat(document.getElementById("Dd-ratio").value);
+			filletRadius = parseFloat(document.getElementById("filletRadius").value);
 
 			// Convert Temp temporarily for display purposes
 			if(temp == 'RT'){$tempA = "Room Temperature";}else{$tempA = temp;}
 
 			// (1) Display the variables
 			let variableString = [units, failureMethod, reliability, materialChoice, surfaceFinish, Dd_ratio, filletRadius, fos, $tempA, torqueA, torqueM, momentA, momentM];
-			let variableName = ["Units","Failure Method", "Reliability", "Material Choice","Surface Finish","D/d Ratio", "Fillet Radius", "Factor of Safety", "Operating Temperature","Alternating Torque", "Mean Torque", "Alternating Moment", "Mean Moment"];
+			let variableName = ["Units","Failure Method", "Reliability", "Material Choice", "Surface Finish","D/d Ratio", "Fillet Radius", "Factor of Safety", "Operating Temperature","Alternating Torque", "Mean Torque", "Alternating Moment", "Mean Moment"];
 
 			i = 0;
 			ui.innerHTML += "<p>Variables Used for Calculation: <ul>";
@@ -376,25 +375,55 @@
 			}
 			ui.innerHTML += "</ul></p>";
 
-			// (2) Begin the Problem Solving Process
+			// (2) Gather Sy, Sut
+			let tempVar = materialChoice.split(" - ");
+			materialChoice = tempVar[0]; //1015 HR Steel
+			$materialSUT = tempVar[1].split(","); //[KPSI, MPA]
+			$materialSY = tempVar[2].split(",");  //[KPSI, MPA]
+
+			if(units == "standard"){
+				materialSUT = $materialSUT[1];
+				materialSY = $materialSY[1];
+			}else{
+				materialSUT = $materialSUT[0];
+				materialSY = $materialSY[0];
+			}
+
+			ui.innerHTML += "<p>Material Properties</p><ul><li>Material: " + materialChoice + "</li><li>S<sub>UT</sub>: " + $materialSUT[0] + " kpsi, " + $materialSUT[1] + " MPA</li><li>S<sub>y</sub>: " + $materialSY[0] + " kpsi, " + $materialSY[1] + " MPA</li>";
 			
+			setTimeout(runStepThree, calcSpeed);
+			
+		}// end of step 2
+
+
+
+		
+// STEP THREE - BEGIN FIRST CALCULATIONS
+
 			// Tip: calcSpeed determines the length of pause between each step (so user can track the code's progress)
 			// for repetative tasks, use myInterval = setInterval(FUNCTION, calcSpeed); to start the repetative process with pauses between each step. 
 			// Then use clearInterval(myInterval); to stop the process
+		
+		function runStepThree(){
 
-
-
-
-
-
-
-
-
-
-
+			// (1) Input Tables from PDF given here: https://canvas.ucsd.edu/courses/51827
+				// Format: each unit is D/d,A,b
+				// Iterative search will use .split(",") and first look at D/d to find a match before then using values A and b
+				const KtGuessTable = ["6,0.87868,-0.99243", "3,0.89334,-0.30860"];
+				const KtsGuessTable = [];
+			
+			// (2) Form Guesses for Kf using table
+				// (A) Find correct values of A and b
+				
+				// (B) Make Calculation
+				
+			
+			// (3) Form Guesses for Kfs using table
+				// (A) Find correct values of A and b
 
 			
-		}
+			
+		}// end of step 3
 		
 	</script>
 
