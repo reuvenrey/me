@@ -166,9 +166,13 @@
 					<div>D / d Ratio</div>
 					<div>
 						<select id='Dd-ratio' onchange='console.log(this.value)'>
+							<option value='1.03'>1.03 (3%)</option>
+							<option value='1.05'>1.05 (5%)</option>
+							<option value='1.07'>1.07 (7%)</option>
 							<option value='1.1'>1.1 (10%)</option>
 							<option value='1.2'>1.2 (20%)</option>
-							<option value='1.3'>1.3 (30%)</option>
+							<option value='1.5'>1.5 (50%)</option>
+							<option value='2'>2 (200%)</option>
 						</select>
 					</div>
 					<div>Fillet Radius</div>
@@ -334,7 +338,11 @@
 			
 		} // End of function runStepOne()
 
-
+		function errorOccurred(){
+					ui.innerHTML += "<p style='font-weight:bold;color:red'>An error has occured! (o_O) <br> Search console for information</p>";
+					setTimeout(function(){stepOneContainer.style.display = "block";},calcSpeed);
+					projLoader.style.display="none";
+		}
 
 
 		
@@ -409,11 +417,45 @@
 			// (1) Input Tables from PDF given here: https://canvas.ucsd.edu/courses/51827
 				// Format: each unit is D/d,A,b
 				// Iterative search will use .split(",") and first look at D/d to find a match before then using values A and b
-				const KtGuessTable = ["6,0.87868,-0.99243", "3,0.89334,-0.30860"];
-				const KtsGuessTable = [];
+				KtGuessTable = ["1.03,0.98061,-0.018381", "1.05,0.98137,-0.19653", "1.07,0.97527,-0.20958", "1.1,0.95120,-0.23757", "1.2,0.97098,-0.21796", "1.5,0.90836,-0.25759", "2,0.90879,-0.28598"];
+				KtsGuessTable = [];
 			
 			// (2) Form Guesses for Kf using table
 				// (A) Find correct values of A and b
+				var tempGuess = 0;
+				var iteration = 0;
+				var tempVal = 0;
+			
+				ui.innerHTML += "<p style='color:cyan'>Finding Kt value using D/d = " + Dd_ratio + "...</p>";
+			
+				while(tempGuess != Dd_ratio){
+					if(iteration > KtGuessTable.length){
+						ui.innerHTML += "<p style='color:red'>Error in retrieving Kt value. Iteration = "+iteration+"</p>";
+						errorOccurred();
+					}else{
+						tempVal = KtGuessTable[iteration].split(",");
+						tempGuess = parseFloat(tempVal[0]);
+						if(tempGuess == Dd_ratio){
+							ui.innerHTML += "<p style='margin-left:40px;'>Correct Guess: "+tempGuess+"</p>";
+							console.log("End Kt guess while loop");
+						}else{
+							ui.innerHTML += "<p style='margin-left:40px;'>Current Guess: "+tempGuess+"</p>";
+							iteration += 1;
+						}	
+					}
+				}// end of while loop
+
+				if(tempGuess == Dd_ratio){
+					ui.innerHTML += "<p style='color:green'>Found Kt estimate! ٩(◕‿◕)۶</p>";
+					var Aval = tempVal[1];
+					var Bval = tempVal[2];
+
+					Kt = Aval*(Math.pow(filletRadius,Bval))
+					ui.innerHTML += "<p style='margin-left:40px;'>Kt Guess = " + Kt + "</p>";
+					
+				}else{
+					errorOccurred();
+				}// end of if tempGuess == Dd-ratio
 				
 				// (B) Make Calculation
 				
