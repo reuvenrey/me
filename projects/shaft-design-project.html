@@ -548,10 +548,15 @@
 					Se = SePrime*ka*kb*kc*kd*ke;
 					ui.innerHTML += "<p style='color:limegreen'>Se Determined (づ ◕‿◕ )づ <b>Se = " + Se + "</b></p>";
 
-			
+				setTimeout(runStepFive, calcSpeed*2);
 			
 		}// end of step 4 -> RETURNS Sy, Su, Se, SePrime
-		
+
+// STEP 5 - DETERMINE INITIAL GUESS OF DIAMETER
+
+		function runStepFive(){
+			console.log('starting step 5');
+		}// end of step 5 -> RETURNS d_initial
 	</script>
 
 	
