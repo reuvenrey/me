@@ -121,7 +121,7 @@
 					</div>
 					<div>Minimum Factor of Safety</div>
 					<div>
-						<input type='number' name='Factor of Safety' placeholder='n' id='factorOfSafety'>
+						<input type='number' name='factor-of-safety' placeholder='n' id='factorOfSafety'>
 					</div>
 					<div>Reliability</div>
 					<div>
@@ -185,23 +185,23 @@
 				<div class='parameterContainer'>
 					<div>Alternating Torque</div>
 					<div>
-						<input id='torqueA' name='Alternating Torque' type='number' placeholder='Ta'>
+						<input id='torqueA' name='A-torque' type='number' placeholder='Ta'>
 					</div>
 					<div>Mean Torque</div>
 					<div>
-						<input id='torqueM' name='Mean Torque' type='number' placeholder='Tm'>
+						<input id='torqueM' name='M-torque' type='number' placeholder='Tm'>
 					</div>
 					<div>Alternating Moment</div>
 					<div>
-						<input id='momentA' name='Alternating Moment' type='number' placeholder='Ma'>
+						<input id='momentA' name='A-Moment' type='number' placeholder='Ma'>
 					</div>
 					<div>Mean Moment</div>
 					<div>
-						<input id='momentM' name='Mean Moment' type='number' placeholder='Mm'>
+						<input id='momentM' name='M-moment' type='number' placeholder='Mm'>
 					</div>
 					<div><p>Environmental Temperature<br><em style='color:orange'>Use RT for Room Temperature</em></p></div>
 					<div>
-						<input id='temp' name='Temperature' placeholder='°F / °C'>
+						<input id='temp' name='temperature' placeholder='°F / °C'>
 					</div>
 					<div>Calculation Speed</div>
 					<div>
@@ -414,8 +414,8 @@
 			// (1) Input Tables from PDF given here: https://canvas.ucsd.edu/courses/51827
 				// Format: each unit is D/d,A,b
 				// Iterative search will use .split(",") and first look at D/d to find a match before then using values A and b
-				KtGuessTable = ["1.1,0.95120,-0.23757", "1.2,0.97098,-0.21796", "1.3,0.90836,-0.25759", "2,0.90879,-0.28598"];
-				KtsGuessTable = [];
+				KtGuessTable = ["1.1,0.95120,-0.23757", "1.2,0.97098,-0.21796", "1.3,0.96011,-0.23117", "2,0.90879,-0.28598"];
+				KtsGuessTable = ["1.1", "1.2", "1.3", "2"];
 			
 			// (2) Form Guesses for Kf using table
 				// (A) Find correct values of A and b
@@ -449,16 +449,16 @@
 
 					Kt = Aval*(Math.pow(filletRadius,Bval))
 					ui.innerHTML += "<p style='margin-left:40px;'>Kt Guess = " + Kt + "</p>";
+
+					// (3) Form Guesses for Kfs using table
+					tempVal = KtsGuessTable[iteration].split(",");
+					
 					
 				}else{
 					errorOccurred();
 				}// end of if tempGuess == Dd-ratio
 				
-				// (B) Make Calculation
-				
-			
-			// (3) Form Guesses for Kfs using table
-				// (A) Find correct values of A and b
+	
 
 			
 			
