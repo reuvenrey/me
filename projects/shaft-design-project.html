@@ -263,7 +263,7 @@
 				if(isNaN(temp)){
 					isGood += 1; projTemp.style.borderColor = "red";	projTemp.style.borderWidth = "2px"; ui.innerHTML += "<p style='color:orange'>Temperature Invalid, must be number value OR 'RT'</p>";
 				}
-				else if(temp > 1000 || temp < -1000){ui.innerHTML += "<p style='color:gold'>Extreme Temperature - Results may be less accurate</p>";}
+				else if(temp > 1000 || temp < 70){ui.innerHTML += "<p style='color:gold'>Extreme Temperature - Results may be less accurate</p>";}
 			}else{temp = 'RT'; projTemp.style.borderColor = "black";projTemp.style.borderWidth = "initial";}
 			
 			// Check if forces are valid (number values)
@@ -320,7 +320,7 @@
 	
 			units = document.getElementById("unitsOfMeasure").value;
 			failureMethod = document.getElementById("failureMethod").value;
-			reliability = document.getElementById("reliability").value;
+			reliability = parseFloat(document.getElementById("reliability").value);
 			materialChoice = document.getElementById("materialChoice").value;
 			surfaceFinish = document.getElementById("manufacturingStyle").value;
 			Dd_ratio = parseFloat(document.getElementById("Dd-ratio").value);
@@ -336,7 +336,7 @@
 
 			i = 0;
 			ui.innerHTML += "<p>Variables Used for Calculation: <ul>";
-			ui.style.height = "50vh";
+			ui.style.height = "40vh";
 			while(i < variableString.length){
 				ui.innerHTML += "<li>" + variableName[i] + ": " + variableString[i] + "</li>";
 				i += 1;
@@ -358,8 +358,9 @@
 			}
 
 			ui.innerHTML += "<p>Material Properties</p><ul><li>Material: " + materialChoice + "</li><li>S<sub>UT</sub>: " + $materialSUT[0] + " kpsi, " + $materialSUT[1] + " MPA</li><li>S<sub>y</sub>: " + $materialSY[0] + " kpsi, " + $materialSY[1] + " MPA</li>";
-			
-			setTimeout(runStepThree, calcSpeed);
+
+			if(calcSpeed > 0){ui.style.height = "90vh";}
+			setTimeout(runStepThree, calcSpeed*2);
 			
 		}// end of step 2
 
@@ -442,46 +443,111 @@
 
 		function runStepFour(){
 
+			/*
 			materialChoice = materialChoice.split(" - ");
-			var tempVar = (materialChoice[1].split(","));
+			var tempVar = materialChoice[1].split(",");
 				const SutKPSI = parseFloat(tempVar[0]);
 				const SutMPA = parseFloat(tempVar[1]);
-			var tempVar = (materialChoice[2].split(","));
+			var tempVar = materialChoice[2].split(",");
 				const SyKPSI = parseFloat(tempVar[0]);
-				const SyMPA = parseFloat(tempVar[1]);
+				const SyMPA = parseFloat(tempVar[1]); */
 
-			ui.innerHTML += "<p>Calculating Se'. Gathered values: Sut = "+SutKPSI+" (Kpsi), "+SutMPA+" (MPA) - Sy = " +SyKPSI+" (Kpsi), "+SyMPA+" (MPA)<p>";
+			ui.innerHTML += "<p style='color:cyan'>Calculating Se'. Units: "+units+", Sy = "+materialSY+", Sut = "+materialSUT+"</p>";
 				
 			// (1) Get Se' value
-			if(units == "english"){ // English Units
-				ui.innerHTML += "<p>Using English Units (KPSI)</p>";
-				Sy = SyKPSI;
-				Su = SutKPSI;
-
-				// Page 326 in text book
-				if(Su <= 200){
-					SePrime = 0.5*Su;
-				}else{
-					SePrime = 100;
+				if(units == "english"){ // English Units
+					ui.innerHTML += "<p>Using English Units (KPSI)</p>";
+					Sy = materialSY;
+					Su = materialSUT;
+	
+					// Page 326 in text book
+					if(Su <= 200){
+						SePrime = 0.5*Su;
+					}else{
+						SePrime = 100;
+					}
+					
+				}else{ 	// Metric  Units
+					ui.innerHTML += "<p>Using Metric Units (MPA)</p>";
+					Sy = materialSY;
+					Su = materialSUT;
+	
+					// Page 326 in text book
+					if(Su <= 1400){
+						SePrime = 0.5*Su;
+					}else{
+						SePrime = 700;
+					}
 				}
+	
+				ui.innerHTML += "<p>Finding initial Se value using Se' = " + SePrime + "...</p>";
+
+			// (2) Get Endurance Modifying Factors k
+
+				// Get Surface Factor ka
+					switch(surfaceFinish){
+						case "ground":
+							if(units == "english"){
+								var Avar = 1.21;
+								var Bvar = -0.067;
+							}else{
+								var Avar = 1.38;
+								var Bvar = -0.067;
+							}
+							break;
+						case "machined":
+							if(units == "english"){
+								var Avar = 2;
+								var Bvar = -0.217;
+							}else{
+								var Avar = 3.04;
+								var Bvar = -0.217;
+							}
+							break;
+						case "as-forged":
+							if(units == "english"){
+								var Avar = 12.7;
+								var Bvar = -0.758;
+							}else{
+								var Avar = 54.9;
+								var Bvar = -0.758;
+							}
+							break;
+					}// end of switch
+	
+					console.log("For Ka: Avar = " + Avar + ", Bvar = " + Bvar);
 				
-			}else{ 	// Metric  Units
-				ui.innerHTML += "<p>Using Metric Units (MPA)</p>";
-				Sy = SyMPA;
-				Su = SutMPA;
+					ka = Avar*(Math.pow(Su,Bvar));
 
-				// Page 326 in text book
-				if(Su <= 1400){
-					SePrime = 0.5*Su;
-				}else{
-					SePrime = 700;
-				}
-			}
-
-			ui.innerHTML += "<p style='color:cyan'>Finding Se value using Se' = " + SePrime + "...</p>";
+				kb = 1; // For initial guess only!
 			
-			
+				kc = 1; // For bending and torsion combination loading
 
+				// For Tempurature Factor
+					if(temp == "RT"){
+						kd = 1;
+					}else{
+						if(units == "english"){
+							kd = 0.98 + (3.5*Math.pow(10,-4))*temp - (6.3*Math.pow(10,-7))*(Math.pow(temp,2));
+						}else{
+							kd = 0.99 + (5.9*Math.pow(10,-4))*temp - (2.1*Math.pow(10,-6))*(Math.pow(temp,2));
+						}
+					}
+			
+				ke = reliability;
+				
+				ui.innerHTML += "<p style='color:violet'>Endurance Limit Modifying Factors</p><ul> \
+					<li>Surface Factor k<sub>a</sub> : " + ka + "</li> \
+					<li>Size Factor (Guess) k<sub>b</sub> : " + kb + "</li> \
+					<li>Load Factor k<sub>c</sub> : " + kc + "</li> \
+					<li>Tempurature Factor k<sub>d</sub> : " + kd + "</li> \
+					<li>Reliability k<sub>e</sub> : " + ke + "</li></ul>";
+
+				// Find Se
+					Se = SePrime*ka*kb*kc*kd*ke;
+					ui.innerHTML += "<p style='color:limegreen'>Se Determined (づ ◕‿◕ )づ <b>Se = " + Se + "</b></p>";
+
+			
 			
 		}// end of step 4 -> RETURNS Sy, Su, Se, SePrime
 		
