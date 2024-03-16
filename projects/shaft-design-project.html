@@ -99,10 +99,11 @@
 					<div>Material Choice</div>
 					<div>
 						<select id='materialChoice' onchange='console.log(this.value)'> <!-- Value nomenclature: NAME - SUT(KPSI),SUT(MPA) - SY(KPSI),SY(MPA) -->
+							<option value='Steel - 75,517 - 50,345'>Steel (Su=75,Sy=50)</option>
 							<option value='1015 HR Steel - 50,340 - 27.5,190'>1015 HR Steel (Su=50,Sy=27.5)</option>
 							<option value='1015 CD Steel - 56,390 - 47,320'>1015 CD Steel (Su=56,Sy=47)</option>
 							<option value='1018 HR Steel - 58,400 - 32,220'>1018 HR Steel (Su=58,Sy=32)</option>
-							<option value='1018 CD Steel - 64,440 - 54,370'>1018 CD Steel (Su=64,Sy=54)</option>
+							<option value='1018 CD Steel - e64,440 - 54,370'>1018 CD Steel (Su=64,Sy=54)</option>
 							<option value='1020 HR Steel - 55,380 - 30,210'>1020 HR Steel (Su=55,Sy=30)</option>
 							<option value='1020 CD Steel - 68,470 - 57,390'>1020 CD Steel (Su=68,Sy=57)</option>
 							<option value='1030 HR Steel - 68,470 - 37.5,260'>1030 HR Steel (Su=68,Sy=37.5)</option>
@@ -521,7 +522,7 @@
 				
 					ka = Avar*(Math.pow(Su,Bvar));
 
-				kb = 1; // For initial guess only!
+				kb = 0.9; // For initial guess only!
 			
 				kc = 1; // For bending and torsion combination loading
 
