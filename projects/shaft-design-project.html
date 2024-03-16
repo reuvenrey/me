@@ -33,9 +33,10 @@
 			<div class='leftContainer'>
 				<h3>Important Considerations</h3>
 				<h4>Kt and Kts Relations</h4>
-				To find Kt and Kts in the initial guess for shaft diameter, I have used provided material which can be found <a href='https://reuvenrey.github.io/me/files/project-files/Shaft-Design-Kt-Kts-Relations.pdf'>here</a>.
-				<h4>Standard Shaft Sizes</h4>
-				This program works by making diameter guesses in increments of standard diameter sizes. The standards used in this program can be found <a href='https://www.marlow-hunter.com/wp-content/export/Miscellaneous/Prop%20shaft%20specs%20&%20dimensions.pdf'>here</a>, with the exception of the 0.25 - 0.5 in shaft diameters. I have added those in myself as these are common for smaller devices.
+				To find Kt and Kts, I have used provided material which can be found <a href='https://reuvenrey.github.io/me/files/project-files/Shaft-Design-Kt-Kts-Relations.pdf'>here</a>.
+				<h4>Success Criteria</h4>
+				This program is an iterative process which makes an initial guess for the diameter d and then checks the Factor of Safety for the guessed diameter. The program will continue to guess different d values, moving in incrememnts of the next standard size up or down, checking for factor of safety with each guess. Once the factor of safety is <b>within 5% of the user provided factor of safety</b>, the program will return the value of d. Alternitively, <b>if the program cannot achieve a factor of safety within 5% of the user provided value</b>, the process will STOP should the next guess for d be within 1% of the previous guess OR if the program has reached the end of the list of available shaft sizes.
+				<p>Standard Shaft sizes have been pulled from <a href='https://www.marlow-hunter.com/wp-content/export/Miscellaneous/Prop%20shaft%20specs%20&%20dimensions.pdf'>this table</a> by Marlow Hunter. I have also added sizes ranging from 0.25in - 0.75in to the program for more flexibility.</p>
 			</div>
 		</div>
 
@@ -550,7 +551,7 @@
 
 				setTimeout(runStepFive, calcSpeed*2);
 			
-		}// end of step 4 -> RETURNS Sy, Su, Se, SePrime
+		}// end of step 4 -> RETURNS Sy, Su, Se (initial guess), SePrime
 
 // STEP 5 - DETERMINE INITIAL GUESS OF DIAMETER
 
