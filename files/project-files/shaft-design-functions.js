@@ -9,6 +9,58 @@ function fsTestInitial(){
   console.warn("Function Script Loaded!");
 }
 
+// GUESS DIAMETER USING DE-GOODMAN
+function guessDiameter(fKf, fKfs, Nfos, Ma, Mm, Ta, Tm, fSe, fSu, funits){
+		
+			 fKf = parseFloat(fKf);
+			 fKfs = parseFloat(fKfs);
+			 Nfos = parseFloat(Nfos);
+
+			// CONVERT EVERYTHING FROM KILA OR MEGA TO FULL UNITS
+			if(funits == "english"){
+				Ma = parseFloat(Ma);
+			 	Mm = parseFloat(Mm);
+			 	Ta = parseFloat(Ta);
+			 	Tm = parseFloat(Tm);
+				
+			 	fSe = parseFloat(fSe)*1000;
+			 	fSu = parseFloat(fSu)*1000;
+			}else{
+				Ma = parseFloat(Ma);
+			 	Mm = parseFloat(Mm);
+			 	Ta = parseFloat(Ta);
+			 	Tm = parseFloat(Tm);
+				
+			 	fSe = parseFloat(fSe)*1000000;
+			 	fSu = parseFloat(fSu)*1000000;
+			}
+			 
+		
+			
+			 ui.innerHTML += "<p style='margin-left:40px;'><em>Guessing a new diameter d (DE-Goodman)</em> with FOS = " + Nfos + "</p>";
+			 ui.innerHTML += "<p style='margin-left:40px;'>Kf = " + fKf + ", Kfs = " + fKfs + "</p>";
+			 ui.innerHTML += "<p style='margin-left:40px;'>Se = " + fSe + ", Su = " + fSu + "</p>";
+			    
+			  var d_new = 0;
+			
+			  var $tempVar = 4*(Math.pow((fKf*Ma),2)) + 3*(Math.pow((fKfs*Ta),2));
+			  let Aval = parseFloat(Math.sqrt($tempVar));
+			
+			  $tempVar = 4*(Math.pow((fKf*Mm),2)) + 3*(Math.pow((fKfs*Tm),2));
+			  let Bval = parseFloat(Math.sqrt($tempVar));
+			  
+			   ui.innerHTML += "<p style='margin-left:40px;'>A Value: " + Aval + ", B Value: " + Bval + "</p>";
+		
+			$tempVar = ((16*Nfos) / Math.PI)*((Aval / fSe) + (Bval / fSu));
+				console.log("Inner DE-Goodman Calculated = " + $tempVar);
+			d_new = Math.pow($tempVar, (1/3));
+		
+			   console.log("D_new Calculated = " + d_new);
+					
+		  return d_new;
+		}// returns new guess for diameter d (unscaled)
+
+
 // ROUND D GUESS TO NEAREST STANDARD
 function roundToStandard(d_value, funits){
   
