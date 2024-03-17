@@ -10,22 +10,23 @@ function fsTestInitial(){
 }
 
 // GUESS THE DIAMERTER USING DE GOODMAN
-function guessDiameter(){
+function guessDiameter(fKf, fKfs, Nfos, Ma, Mm, Ta, Tm, fSe, fSu){
 
-	 ui.innerHTML += "<p style='margin-left:40px;'><em>Guessing a new diameter d (DE-Goodman)</em></p>";
-	 ui.innerHTML += "<p style='margin-left:40px;'>Kf = " + Kf + ", Kfs = " + Kfs + "</p>";
+	 ui.innerHTML += "<p style='margin-left:40px;'><em>Guessing a new diameter d (DE-Goodman)</em> with FOS = " + Nfos + "</p>";
+	 ui.innerHTML += "<p style='margin-left:40px;'>Kf = " + fKf + ", Kfs = " + fKfs + "</p>";
+	 ui.innerHTML += "<p style='margin-left:40px;'>Se = " + fSe + ", Su = " + fSu + "</p>";
 	    
 	  var d_new = 0;
 	
-	  var tempVar = 4*(Math.pow((Kf*momentA),2)) + 3*(Math.pow((Kfs*torqueA),2));
+	  var tempVar = 4*(Math.pow((fKf*Ma),2)) + 3*(Math.pow((fKfs*Ta),2));
 	  let Aval = Math.sqrt(tempVar);
 	
-	  tempVar = 4*(Math.pow((Kf*momentM),2)) + 3*(Math.pow((Kfs*torqueM),2));
+	  tempVar = 4*(Math.pow((fKf*Mm),2)) + 3*(Math.pow((fKfs*Tm),2));
 	  let Bval = Math.sqrt(tempVar);
 	  
 	   ui.innerHTML += "<p style='margin-left:40px;'>A Value: " + Aval + ", B Value: " + Bval + "</p>";
 
-		tempVar = ((16*fos) / Math.pi)*((Aval / Se) + (Bval / Su));
+		tempVar = ((16*Nfos) / Math.pi)*((Aval / fSe) + (Bval / fSu));
 
 		d_new = Math.pow(tempVar, (1/3));
 			
