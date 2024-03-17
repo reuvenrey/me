@@ -73,6 +73,7 @@ function roundToStandard(d_value, funits){
 			}
 
 			var d_new = 0;
+			var findexVal = 1;
 
 			var doLoop = 'true';
 			var tempIteration = 1;
@@ -99,6 +100,7 @@ function roundToStandard(d_value, funits){
 					if(d_value > lowerLim && d_value < upperLim){ // Found a match!
             
 						d_new = $standards[tempIteration];
+						findexVal = tempIteration;
 						ui.innerHTML += "<p style='margin-left:40px;color:violet'>New Value of d: " + d_new + "</p>";
 						doLoop = 'false';
             
@@ -110,6 +112,7 @@ function roundToStandard(d_value, funits){
 				}
 			}// end of while loop
 
+			return foutput = [d_new, findexVal];
 			return d_new;
 			
 		} // returns a new d value which is in next lowest standard sizing
