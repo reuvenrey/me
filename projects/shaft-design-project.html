@@ -605,6 +605,8 @@
 			
 			var whileIt = 0;
 			var isGood = 'false';
+
+			var d_prev_check = 0;
 			
 			while(isGood != 'true'){
 			whileIt += 1;
@@ -627,7 +629,43 @@
 				// Compare factor of safety to determine if Diameter Should be Changed
 				if(nyCalculated > fos){
 					// Diameter is large enough to prevent yielding. Need to check for fatigue factor now
-					
+					if(fosCalculated < fos){
+						if(d_prev_check > d_guessed){ // Diameter has already been increased - stop here to prevent infinite loop.
+							isGood = 'true';
+							standardIndexVal += 1;
+							d_guessed = changeDval(standardIndexVal, units, d_prev_check);
+						}else{
+							// Diameter is too small to prevent fatigure fracture
+								standardIndexVal += 1;
+								var tempDforError = d_guessed;
+								d_guessed = changeDval(standardIndexVal, units, tempDforError);
+								ui.innerHTML += "<p style='color:orange'>To prevent infinite loop, Diameter will remain slightly larger than requested.</p>";
+							if(d_guessed == 'NaN'){
+								// exit the loop if the diameter is larger than anything on the standards parts list
+								ui.innerHTML += "<p style='color:orange'>Reached the end of Standard Diameters -- Shaft cannot be made any <b>Larger</b> than " + d_new + "(units) </p>";
+								d_guessed = tempDforError;
+								isGood = 'true';
+							}
+						}
+					}else{
+						var $margin = (fos - fosCalculated) / fos;
+						if($margin > 0.05){ // factor of safety is too high
+							standardIndexVal -= 1;
+							if(standardIndexVal < 0){
+								ui.innerHTML += "<p style='color:orange'>Reached the end of Standard Diameters -- Shaft cannot be made any <b>Smaller</b> than " + d_new + "(units) </p>";
+							}else{
+								d_prev_check = d_guessed;
+								d_guessed = changeDval(standardIndexVal, units, d_prev_check);
+							}
+						}else{ // SUCCESS!!
+							isGood = 'true';
+							if(units == 'english'){
+								ui.innerHTML += "<p style='color:limegreen'>Diameter Successfully Determined to be " + d_guessed + " inches!! ٩(◕‿◕)۶</p>";
+							}else{
+								ui.innerHTML += "<p style='color:limegreen'>Diameter Successfully Determined to be " + d_guessed*1000 + " mm!! ٩(◕‿◕)۶</p>";
+							}
+						}
+					}
 				}else{
 					// Diameter is too small, part will yield
 					standardIndexVal += 1;
@@ -641,6 +679,8 @@
 					}
 				}
 			}// end of while loop
+
+			
 		}
 	</script>
 
