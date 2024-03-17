@@ -29,17 +29,17 @@ function guessDiameter(fKf, fKfs, Nfos, Ma, Mm, Ta, Tm, fSe, fSu){
 	    
 	  var d_new = 0;
 	
-	  var tempVar = 4*(Math.pow((fKf*Ma),2)) + 3*(Math.pow((fKfs*Ta),2));
-	  let Aval = Math.sqrt(tempVar);
+	  var $tempVar = 4*(Math.pow((fKf*Ma),2)) + 3*(Math.pow((fKfs*Ta),2));
+	  let Aval = Math.sqrt($tempVar);
 	
-	  tempVar = 4*(Math.pow((fKf*Mm),2)) + 3*(Math.pow((fKfs*Tm),2));
-	  let Bval = Math.sqrt(tempVar);
+	  $tempVar = 4*(Math.pow((fKf*Mm),2)) + 3*(Math.pow((fKfs*Tm),2));
+	  let Bval = Math.sqrt($tempVar);
 	  
 	   ui.innerHTML += "<p style='margin-left:40px;'>A Value: " + Aval + ", B Value: " + Bval + "</p>";
 
-		tempVar = ((16*Nfos) / Math.pi)*((Aval / fSe) + (Bval / fSu));
-
-		d_new = Math.pow(tempVar, (1/3));
+	$tempVar = ((16*Nfos) / Math.pi)*((Aval / fSe) + (Bval / fSu));
+		console.log("Inner DE-Goodman Calculated = " + $tempVar);
+	d_new = Math.pow($tempVar, (1/3));
 
 	   console.log("D_new Calculated = " + d_new);
 			
