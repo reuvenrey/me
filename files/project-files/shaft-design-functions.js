@@ -64,7 +64,7 @@ function guessDiameter(fKf, fKfs, Nfos, Ma, Mm, Ta, Tm, fSe, fSu, funits){
 // ROUND D GUESS TO NEAREST STANDARD
 function roundToStandard(d_value, funits){
   
-			ui.innerHTML += "<p style='margin-left:40px'>Rounding Diameter (" + d_value + ") DOWN to next standard size.</p>";
+			ui.innerHTML += "<p style='margin-left:40px'>Rounding Diameter (" + d_value + ") to next standard size.</p>";
   			var $standards = [];
 			if(funits == 'english'){
 				$standards = shaftDiameterIN;
@@ -233,3 +233,18 @@ function determineVonStress(dval, fKf, fKfs, fMoment, fTorque, funits){
 
 			return tempVal;
 		}// returns a factor of safety given the vonStresses and diameter
+
+
+		function determineNy(dval, fvonStressA, fvonStressM, fSy, funits){
+
+			if(funits == 'english'){fSy = fSy*1000;}else{fSy = fSy*1000000;}
+			
+			var fSmax = fvonStressA + fvonStressM;
+			
+			var tempVal = fSy / fSmax;
+			
+			ui.innerHTML += "<p style='margin-left:40px;color:violet;'><u>Yielding</u> Factor of Safety for Guessed Shaft Diameter: " + tempVal + "</p>";
+
+			return tempVal;
+			
+		}// end of fnction determineNy, returns ny (yielding factor of safety)
