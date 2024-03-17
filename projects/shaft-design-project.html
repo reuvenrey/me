@@ -197,17 +197,31 @@
 	<script>
 		const ui = document.getElementById("projConsole");
 		// GUESS THE DIAMERTER USING DE GOODMAN
-			function guessDiameter(fKf, fKfs, Nfos, Ma, Mm, Ta, Tm, fSe, fSu){
+			function guessDiameter(fKf, fKfs, Nfos, Ma, Mm, Ta, Tm, fSe, fSu, funits){
 		
 			 fKf = parseFloat(fKf);
 			 fKfs = parseFloat(fKfs);
 			 Nfos = parseFloat(Nfos);
-			 Ma = parseFloat(Ma);
-			 Mm = parseFloat(Mm);
-			 Ta = parseFloat(Ta);
-			 Tm = parseFloat(Tm);
-			 fSe = parseFloat(fSe);
-			 fSu = parseFloat(fSu);
+
+			// CONVERT EVERYTHING FROM KILA OR MEGA TO FULL UNITS
+			if(funits == "english"){
+				Ma = parseFloat(Ma);
+			 	Mm = parseFloat(Mm);
+			 	Ta = parseFloat(Ta);
+			 	Tm = parseFloat(Tm);
+				
+			 	fSe = parseFloat(fSe)*1000;
+			 	fSu = parseFloat(fSu)*1000;
+			}else{
+				Ma = parseFloat(Ma);
+			 	Mm = parseFloat(Mm);
+			 	Ta = parseFloat(Ta);
+			 	Tm = parseFloat(Tm);
+				
+			 	fSe = parseFloat(fSe)*1000000;
+			 	fSu = parseFloat(fSu)*1000000;
+			}
+			 
 		
 			
 			 ui.innerHTML += "<p style='margin-left:40px;'><em>Guessing a new diameter d (DE-Goodman)</em> with FOS = " + Nfos + "</p>";
@@ -618,7 +632,7 @@
 
 			ui.innerHTML += "<p style='color:cyan'>Forming initial guess for Diameter...</p>";
 
-			d_initial = guessDiameter(Kf,Kfs,fos,momentA,momentM,torqueA,torqueM,Se,Su);
+			d_initial = guessDiameter(Kf,Kfs,fos,momentA,momentM,torqueA,torqueM,Se,Su,units);
 
 			if(units == "english"){
 				ui.innerHTML += "<p style='color:limegreen'>Diameter Guess: " + d_initial + " inches";
