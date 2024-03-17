@@ -193,59 +193,9 @@
 
 	<!-- ------------------------------------------------------------------------------------------- DESIGN PROJECT CODE ----------------------------->
 
-	<!--<script type='text/javascript' src='https://reuvenrey.github.io/me/files/project-files/shaft-design-functions.js'></script>-->
+	<script type='text/javascript' src='https://reuvenrey.github.io/me/files/project-files/shaft-design-functions.js'></script>
 	<script>
-		const ui = document.getElementById("projConsole");
-		// GUESS THE DIAMERTER USING DE GOODMAN
-			function guessDiameter(fKf, fKfs, Nfos, Ma, Mm, Ta, Tm, fSe, fSu, funits){
-		
-			 fKf = parseFloat(fKf);
-			 fKfs = parseFloat(fKfs);
-			 Nfos = parseFloat(Nfos);
 
-			// CONVERT EVERYTHING FROM KILA OR MEGA TO FULL UNITS
-			if(funits == "english"){
-				Ma = parseFloat(Ma);
-			 	Mm = parseFloat(Mm);
-			 	Ta = parseFloat(Ta);
-			 	Tm = parseFloat(Tm);
-				
-			 	fSe = parseFloat(fSe)*1000;
-			 	fSu = parseFloat(fSu)*1000;
-			}else{
-				Ma = parseFloat(Ma);
-			 	Mm = parseFloat(Mm);
-			 	Ta = parseFloat(Ta);
-			 	Tm = parseFloat(Tm);
-				
-			 	fSe = parseFloat(fSe)*1000000;
-			 	fSu = parseFloat(fSu)*1000000;
-			}
-			 
-		
-			
-			 ui.innerHTML += "<p style='margin-left:40px;'><em>Guessing a new diameter d (DE-Goodman)</em> with FOS = " + Nfos + "</p>";
-			 ui.innerHTML += "<p style='margin-left:40px;'>Kf = " + fKf + ", Kfs = " + fKfs + "</p>";
-			 ui.innerHTML += "<p style='margin-left:40px;'>Se = " + fSe + ", Su = " + fSu + "</p>";
-			    
-			  var d_new = 0;
-			
-			  var $tempVar = 4*(Math.pow((fKf*Ma),2)) + 3*(Math.pow((fKfs*Ta),2));
-			  let Aval = parseFloat(Math.sqrt($tempVar));
-			
-			  $tempVar = 4*(Math.pow((fKf*Mm),2)) + 3*(Math.pow((fKfs*Tm),2));
-			  let Bval = parseFloat(Math.sqrt($tempVar));
-			  
-			   ui.innerHTML += "<p style='margin-left:40px;'>A Value: " + Aval + ", B Value: " + Bval + "</p>";
-		
-			$tempVar = ((16*Nfos) / Math.PI)*((Aval / fSe) + (Bval / fSu));
-				console.log("Inner DE-Goodman Calculated = " + $tempVar);
-			d_new = Math.pow($tempVar, (1/3));
-		
-			   console.log("D_new Calculated = " + d_new);
-					
-		  return d_new;
-		}// returns new guess for diameter d (unscaled)
 	</script>
 
 
@@ -286,7 +236,7 @@
 			// Write to console
 			projIterations += 1;
 			ui.innerHTML = "<h3>Project Console - Iteration "+projIterations+"</h3>Start Program / Verifying User Inputs";
-			ui.innerHTML = "<button style='position:fixed; bottom:10px; right:20px; z-index:900;' onclick='stopCodeAbort()'>Abort Iteration</button>";
+			ui.innerHTML += "<button style='position:fixed; bottom:10px; right:20px; z-index:900;' onclick='stopCodeAbort()'>Abort Iteration</button>";
 
 			// Gather All Input Elements - document.getElementById("");
 				// Will use .value for variables, and .style.borderColor = "red" to signify invalid inputs
@@ -639,9 +589,59 @@
 			}else{
 				ui.innerHTML += "<p style='color:limegreen'>( ˘▽˘)っ♨ Initial Diameter Guess: " + d_initial + " meters";
 			}
-			
-			
+
+			setTimeout(runStepSix,calcSpeed*1.5);
+				
 		}// end of step 5 -> RETURNS d_initial
+
+// STEP 6 - ROUND INITIAL GUESS TO NEXT STANDARD SIZE DOWNWARDS AND FIND FACTOR OF SAFETY
+
+		function runStepSix(){
+			var tempVarOut = roundToStandard(d_initial, units);
+			d_guessed = tempVarOut[0];
+			standardIndexVal = tempVarOut[1];
+
+			console.log("Standards Index Value: " + standardIndexVal);
+			
+			var whileIt = 0;
+			var isGood = 'false';
+			
+			while(isGood != 'true'){
+			whileIt += 1;
+			ui.innerHTML += "<p style='color:cyan'>Iteration " + whileIt + " - Diameter: " + d_guessed + "</p>";
+				
+				Se = determineNewSe(d_guessed, SePrime, Su, ka,kc,kd,ke, units); // will calculate new Se using new kb determined from diameter
+				
+				var tempVar = determineKfKfs(d_guessed, Su, filletRadius, Kt, Kts, units); // calculate new Kf, Kfs using diameter
+				Kf = tempVar[0];
+				Kfs = tempVar[1];
+				console.log("Returned Values: Kf = " + Kf + ", Kfs = " + Kfs);
+	
+				vonStressA = determineVonStress(d_guessed, Kf, Kfs, momentA, torqueA, units); // calculate stresses
+				vonStressM = determineVonStress(d_guessed, Kf, Kfs, momentM, torqueM, units);
+	
+				fosCalculated = determineFOS(d_guessed, vonStressA, vonStressM, Se, Su, units); // calculate factor of safety
+	
+				nyCalculated = determineNy(d_guessed, vonStressA, vonStressM, Sy, units); // check for yielding factor of safety
+
+				// Compare factor of safety to determine if Diameter Should be Changed
+				if(nyCalculated > fos){
+					// Diameter is large enough to prevent yielding. Need to check for fatigue factor now
+					
+				}else{
+					// Diameter is too small, part will yield
+					standardIndexVal += 1;
+					var tempDforError = d_guessed;
+					d_guessed = changeDval(standardIndexVal, units, tempDforError);
+					if(d_guessed == 'NaN'){
+						// exit the loop if the diameter is larger than anything on the standards parts list
+						ui.innerHTML += "<p style='color:orange'>Reached the end of Standard Diameters -- Shaft cannot be made any <b>Largerr</b> than " + d_new + "(units) </p>";
+						d_guessed = tempDforError;
+						isGood = 'true';
+					}
+				}
+			}// end of while loop
+		}
 	</script>
 
 	
