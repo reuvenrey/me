@@ -251,3 +251,22 @@ function determineVonStress(dval, fKf, fKfs, fMoment, fTorque, funits){
 			return tempVal;
 			
 		}// end of fnction determineNy, returns ny (yielding factor of safety)
+
+		function changeDval(fstandardIndexVal, funits, fprev){
+			var $standards = [];
+			
+			if(funits == 'english'){
+				$standards = shaftDiameterIN;
+			}else{
+				$standards = shaftDiameterMM;
+			}
+
+			if(fstandardIndexVal > ($standards.length - 1) || fstandardIndexVal < 0){
+				return 'NaN';
+			}else{
+				return $standards[fstandardIndexVal];
+			}
+
+			ui.innerHTML += "<p>Changed Diameter from " + fprev + " to " + $standards[fstandardIndexVal] + "</p>";
+
+		}// increase (or decrease) the diameter to next standard size.
