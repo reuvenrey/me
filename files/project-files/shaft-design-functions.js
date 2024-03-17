@@ -47,7 +47,7 @@ function roundToStandard(d_value, funits){
 					if(d_value > lowerLim && d_value < upperLim){ // Found a match!
             
 						d_new = $standards[tempIteration];
-						ui.innerHTML += "<p style='color:violet'>New Value of d: " + d_new + "</p>";
+						ui.innerHTML += "<p style='margin-left:40px;color:violet'>New Value of d: " + d_new + "</p>";
 						doLoop = 'false';
             
 					}else{
@@ -65,7 +65,7 @@ function roundToStandard(d_value, funits){
 
 
 	// from (6-19) in text book (pg 333)
-		function determineNewSe(dval, fSePrime, fSu, fka,fkc,fkd,fke, funits){
+	function determineNewSe(dval, fSePrime, fSu, fka,fkc,fkd,fke, funits){
 			ui.innerHTML += "<p style='margin-left:40px;'>Determining new Se value (Diameter = " + dval + ")</p>";
 			var kfb = 0.9;
 			
@@ -95,3 +95,54 @@ function roundToStandard(d_value, funits){
 			ui.innerHTML += "<p style='margin-left:40px; color:violet;'>New Se value: " + fSe + " " + funits + "</p>";
 			return fSe;
 	} // end of function determineNewSe (returns Se)
+
+
+// Using Chapter 6 - pg 343 / 323 of the textbook
+	function determineKfKfs(dval, fSu, fRd, fKt, fKts, funits){
+			ui.innerHTML += "<p style='margin-left:40px;'>Determining new Kf, Kfs values (Diameter = " + dval + ", Radius = d*" + fRd +")</p>";
+			
+			var fKfKfs = [];
+			
+			var sqrtAt = 0;
+			var sqrtAts = 0;
+			var fKf = 0;
+			var fKfs = 0;
+
+			let fr = fRd*dval;
+			let sqrtR = Math.pow(fr, 0.5);
+
+			if(funits == 'standard'){sqrtR = sqrtR*Math.pow(1000,0.5);} // convert radius^1/2 to meters^1/2
+			
+			if(funits == 'english'){
+				if(fSu >= 50 && fSu <= 250){
+					sqrtAt = 0.246 - (3.08*Math.pow(10,-3)*fSu) + (1.51*Math.pow(10,-5)*Math.pow(fSu,2)) - (2.67*Math.pow(10,-8)*Math.pow(fSu,3));
+					sqrtAts = 0.190 - (2.51*Math.pow(10,-3)*fSu) + (1.35*Math.pow(10,-5)*Math.pow(fSu,2)) - (2.67*Math.pow(10,-8)*Math.pow(fSu,3));
+
+					fKf = 1 + (fKt - 1)/(1 + (sqrtAt/sqrtR));
+					fKfs = 1 + (fKts - 1)/(1 + (sqrtAts/sqrtR));
+
+					fKfKfs = [fKf, fKfs];
+				}else{
+					ui.innerHTML += "<p style='margin-left:40px; color:orange'>Because Su is outside range of 50 to 250 KPsi, Kt = Kf, Kts = Kfs. Results may be inaccurate</p>";
+					fKfKfs = [fKt, fKts];
+				}
+			}else{
+				if(fSu >= 340 && fSu <= 1500){
+					sqrtAt = 1.24 - (2.25*Math.pow(10,-3)*fSu) + (1.60*Math.pow(10,-6)*Math.pow(fSu,2)) - (4.11*Math.pow(10,-10)*Math.pow(fSu,3));
+					sqrtAts = 0.958 - (1.83*Math.pow(10,-3)*fSu) + (1.43*Math.pow(10,-6)*Math.pow(fSu,2)) - (4.11*Math.pow(10,-10)*Math.pow(fSu,3));
+
+					fKf = 1 + (fKt - 1)/(1 + (sqrtAt/sqrtR));
+					fKfs = 1 + (fKts - 1)/(1 + (sqrtAts/sqrtR));
+
+					fKfKfs = [fKf, fKfs];
+				}else{
+					ui.innerHTML += "<p style='margin-left:40px; color:orange'>Because Su is outside range of 340 to 1500 MPa, Kt = Kf, Kts = Kfs. Results may be inaccurate</p>";
+					fKfKfs = [fKt, fKts];
+				}
+			}
+
+			ui.innerHTML += "<p style='margin-left:40px; color:violet;'>New Values: Kf = " + fKfKfs[0] + ", Kfs = " + fKfKfs[1] + "</p>";
+
+			return fKfKfs;
+			
+	}// returns array fKfKfs = [Kf, Kfs]
