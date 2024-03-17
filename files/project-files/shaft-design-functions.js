@@ -12,7 +12,8 @@ function fsTestInitial(){
 // GUESS THE DIAMERTER USING DE GOODMAN
 function guessDiameter(){
 
-	  ui.innerHTML += "<p><em>Guessing a new diameter d (DE-Goodman)</em></p>";
+	 ui.innerHTML += "<p style='margin-left:40px;'><em>Guessing a new diameter d (DE-Goodman)</em></p>";
+	 ui.innerHTML += "<p style='margin-left:40px;'>Kf = " + Kf + ", Kfs = " + Kfs + "</p>";
 	    
 	  var d_new = 0;
 	
