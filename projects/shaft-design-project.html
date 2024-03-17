@@ -557,7 +557,20 @@
 // STEP 5 - DETERMINE INITIAL GUESS OF DIAMETER
 
 		function runStepFive(){
-			console.log('starting step 5');
+			Kf = Kt;
+			Kfs = Kts;
+
+			ui.innerHTML += "<p style='color:cyan'>Forming initial guess for Diameter...</p>";
+
+			d_initial = guessDiameter();
+
+			if(units == "english"){
+				ui.innerHTML += "<p style='color:limegreen'>Diameter Guess: " + d_initial + " inches";
+			}else{
+				ui.innerHTML += "<p style='color:limegreen'>Diameter Guess: " + d_initial + " meters";
+			}
+			
+			
 		}// end of step 5 -> RETURNS d_initial
 	</script>
 
