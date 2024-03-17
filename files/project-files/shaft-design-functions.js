@@ -198,3 +198,38 @@ function roundToStandard(d_value, funits){
 			return fKfKfs;
 			
 	}// returns array fKfKfs = [Kf, Kfs]
+
+function determineVonStress(dval, fKf, fKfs, fMoment, fTorque, funits){
+			
+			if(funits == 'english'){funits = 'lbf*in';}else{funits = 'N*m';}
+			ui.innerHTML += "<p style='margin-left:40px'>Finding Von Mices Stress using values: Moment = " + fMoment + ", Torque = " + fTorque + "(" + funits + ")</p>";
+			if(funits == 'english'){funits = 'Psi';}else{funits = 'Pa';}
+			
+			var fvonStress = 0;
+
+			var fSa = (32*fKf*fMoment)/(Math.PI * Math.pow(dval,3));
+			var fTa = (16*fKfs*fTorque)/(Math.PI * Math.pow(dval,3));
+
+			var tempVar = (Math.pow(fSa,2)) + 3*(Math.pow(fTa,2));
+			
+			fvonStress = Math.pow(tempVar, 0.5);
+
+			ui.innerHTML += "<p style='margin-left:40px;color:violet;'>Von Misces Stress: " + fvonStress + "</p>";
+			return fvonStress;
+			
+		}// Returns vonStress
+
+		function determineFOS(dval, fvonStressA, fvonStressM, fSe, fSu, funits){
+			ui.innerHTML += "<p style='margin-left:40px'>Determining Factor of Safety of Current Shaft Guess: " + dval + "</p>";
+
+			// Convert Se, Su to psi or pa (from kpsi or MPa)
+			if(funits == 'english'){fSe = fSe*1000; fSu = fSu*1000;}else{fSe = fSe*1000000; fSu = fSu*1000000;}
+			
+			var tempVal = (fvonStressA / fSe) + (fvonStressM / fSu);
+
+			tempVal = Math.pow(tempVal, -1);
+
+			ui.innerHTML += "<p style='margin-left:40px;color:violet;font-weight:bold;'>Factor of Safety for Guessed Shaft Diameter: " + tempVal + "</p>";
+
+			return tempVal;
+		}// returns a factor of safety given the vonStresses and diameter
