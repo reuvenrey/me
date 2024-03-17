@@ -8,3 +8,56 @@ const ui = document.getElementById("projConsole"); // console: 	ui.innerHTML += 
 function fsTestInitial(){
   console.warn("Function Script Loaded!");
 }
+
+// ROUND D GUESS TO NEAREST STANDARD
+function roundToStandard(d_value, funits){
+  
+			ui.innerHTML += "<p style='margin-left:40px'>Rounding Diameter (" + d_value + ") DOWN to next standard size.</p>";
+  			var $standards = [];
+			if(funits == 'english'){
+				$standards = shaftDiameterIN;
+			}else{
+				$standards = shaftDiameterMM;
+			}
+
+			var d_new = 0;
+
+			var doLoop = 'true';
+			var tempIteration = 1;
+
+			while(doLoop == 'true'){
+        
+				if(tempIteration > ($standards.length - 1)){
+          
+					d_new = $standards[$standards.length - 1];
+					ui.innerHTML += "<p style='color:orange'>Reached the end of Standard Diameters -- Shaft cannot be made any <b>Larger</b> than " + d_new + "(units) </p>";
+					doLoop = 'false';
+          
+				}else if(d_value < $standards[0]){
+          
+  					d_new = $standards[0];
+  					ui.innerHTML += "<p style='color:orange'>Reached the end of Standard Diameters -- Shaft cannot be made any <b>Smaller</b> than " + d_new + "(units) </p>";
+  					doLoop = 'false';
+				}
+				else{
+					var lowerLim = $standards[tempIteration - 1];
+					var upperLim = $standards[tempIteration + 1];
+					console.log("lowerLim = " + lowerLim + ", upperLim = " + upperLim);
+					
+					if(d_value > lowerLim && d_value < upperLim){ // Found a match!
+            
+						d_new = $standards[tempIteration];
+						ui.innerHTML += "<p style='color:violet'>New Value of d: " + d_new + "</p>";
+						doLoop = 'false';
+            
+					}else{
+            
+						tempIteration += 1;
+            
+					}
+				}
+			}// end of while loop
+
+			return d_new;
+			
+		} // returns a new d value which is in next lowest standard sizing
