@@ -12,6 +12,17 @@ function fsTestInitial(){
 // GUESS THE DIAMERTER USING DE GOODMAN
 function guessDiameter(fKf, fKfs, Nfos, Ma, Mm, Ta, Tm, fSe, fSu){
 
+	fKf = parseFloat(fKf);
+	fKfs = parseFloat(fKfs);
+	Nfos = parseFloat(Nfos);
+	Ma = parseFloat(Ma);
+	Mm = parseFloat(Mm);
+	Ta = parseFloat(Ta);
+	Tm = parseFloat(Tm);
+	fSe = parseFloat(fSe);
+	fSu = parseFloat(fSu);
+
+	
 	 ui.innerHTML += "<p style='margin-left:40px;'><em>Guessing a new diameter d (DE-Goodman)</em> with FOS = " + Nfos + "</p>";
 	 ui.innerHTML += "<p style='margin-left:40px;'>Kf = " + fKf + ", Kfs = " + fKfs + "</p>";
 	 ui.innerHTML += "<p style='margin-left:40px;'>Se = " + fSe + ", Su = " + fSu + "</p>";
