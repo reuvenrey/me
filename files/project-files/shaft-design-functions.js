@@ -29,6 +29,8 @@ function guessDiameter(fKf, fKfs, Nfos, Ma, Mm, Ta, Tm, fSe, fSu){
 		tempVar = ((16*Nfos) / Math.pi)*((Aval / fSe) + (Bval / fSu));
 
 		d_new = Math.pow(tempVar, (1/3));
+
+	   console.log("D_new Calculated = " + d_new);
 			
   return d_new;
 }// returns new guess for diameter d (unscaled)
