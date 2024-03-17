@@ -61,3 +61,37 @@ function roundToStandard(d_value, funits){
 			return d_new;
 			
 		} // returns a new d value which is in next lowest standard sizing
+
+
+
+	// from (6-19) in text book (pg 333)
+		function determineNewSe(dval, fSePrime, fSu, fka,fkc,fkd,fke, funits){
+			ui.innerHTML += "<p style='margin-left:40px;'>Determining new Se value (Diameter = " + dval + ")</p>";
+			var kfb = 0.9;
+			
+			if(funits == 'english'){
+				if(dval >= 0.3 && dval <= 2){
+					kfb = 0.879*Math.pow(dval,(-0.107));
+				}else if(dval <= 10){
+					kfb = 0.91*Math.pow(dval,(-0.157));
+				}else{
+					kfb = 1;
+				}
+			}else{
+				dval = dval*Math.pow(10, -3);
+				if(dval >= 7.62 && dval <= 2){
+					kfb = 1.24*Math.pow(dval,(-0.107));
+				}else if(dval <= 10){
+					kfb = 1.51*Math.pow(dval,(-0.157));
+				}else{
+					kfb = 1;
+				}
+			}
+
+			if(funits == 'english'){funits = "Kpsi";}else{funits = "MPa";}
+			
+			fSe = fSePrime*fka*kfb**fkc*fkd*fke;
+			
+			ui.innerHTML += "<p style='margin-left:40px; color:violet;'>New Se value: " + fSe + " " + funits + "</p>";
+			return fSe;
+	} // end of function determineNewSe (returns Se)
