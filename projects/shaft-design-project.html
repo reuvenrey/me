@@ -115,8 +115,8 @@
 					<div>Surface Finish</div>
 					<div>
 						<select id='manufacturingStyle' onchange='console.log(this.value)'>
-							<option value='ground'>Ground</option>
 							<option value='machined'>Machined</option>
+							<option value='ground'>Ground</option>
 							<option value='machined'>Cold Drawn</option>
 							<option value='as-forged'>As-Forged</option>
 						</select>
@@ -138,8 +138,8 @@
 					<div>Fillet Radius</div>
 					<div>
 						<select id='filletRadius' onchange='console.log("Value: "+ this.value)'>
-							<option value='0.02'>2% (Sharp)</option>
 							<option value='0.10'>10% (Generous)</option>
+							<option value='0.02'>2% (Sharp)</option>
 						</select>
 					</div>
 				</div> <!-- end of GEOMETRY parameters-->
@@ -196,7 +196,7 @@
 	<script type='text/javascript' src='https://reuvenrey.github.io/me/files/project-files/shaft-design-functions.js'></script>
 	<script>
 		// Console Container and Loader
-		const ui = document.getElementById("projConsole"); // console: 	ui.innerHTML += "";
+		//const ui = document.getElementById("projConsole"); // console: 	ui.innerHTML += "";
 		const projLoader = document.getElementById("projLoader");
 
 		// User Variable Input Elements
@@ -562,7 +562,7 @@
 
 			ui.innerHTML += "<p style='color:cyan'>Forming initial guess for Diameter...</p>";
 
-			d_initial = guessDiameter();
+			d_initial = guessDiameter(Kf,Kfs,fos,momentA,momentM,torqueA,torqueM,Se,Su);
 
 			if(units == "english"){
 				ui.innerHTML += "<p style='color:limegreen'>Diameter Guess: " + d_initial + " inches";
