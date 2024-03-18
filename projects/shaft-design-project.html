@@ -743,11 +743,15 @@ e<!DOCTYPE html>
 		function runCodeAgain(){
 			stepOneContainer.style.display = "block";
 		}
-
+		
+		var alreadyExpanded = 0;
 		function expandConsoleDiv(){
 			ui.style.height = '80vh';
 			ui.style.backgroundColor = "rgba(0,0,0,0.9)";
-			ui.innerHTML += "<button id='shrinkConsolBtn' style='position:fixed; bottom:10px; right:20px; z-index:900;' onclick='shrinkConsoleDiv()'>Shrink Console</button>";
+			if(alreadyExpanded == 0){
+				ui.innerHTML += "<button id='shrinkConsolBtn' style='position:fixed; bottom:10px; right:20px; z-index:900;' onclick='shrinkConsoleDiv()'>Shrink Console</button>";
+				alreadyExpanded = 'your mommmm';
+			}
 			document.getElementById("shrinkConsolBtn").style.display = 'block';
 		}
 		function shrinkConsoleDiv(){
