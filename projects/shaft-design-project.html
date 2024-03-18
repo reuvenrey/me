@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+e<!DOCTYPE html>
 <html>
 
 	<head>
@@ -190,7 +190,8 @@
 					 <tr>
 						 <th>Iteration</th>
 						 <th>Material Selection</th>
-						 <th>Suggested Diameter</th>
+						 <th>Suggested Diameter d</th>
+						 <th>Large Diameter D</th>
 						 <th>Factor of Safety</th>
 						 <th>Desired Factor of Safety</th>
 					 </tr>
@@ -727,10 +728,11 @@
 				vonStressM = determineVonStress(d_guessed, Kf, Kfs, momentM, torqueM, units);
 		
 				fosCalculated = determineFOS(d_guessed, vonStressA, vonStressM, Se, Su, units); // calculate factor of safety
-				
+
+			var largeD = Dd_ratio*d_guessed;
 			
 			finalContainer.style.display = 'block';
-			finalContainerTable.innerHTML += "<tr><td>Trial " + projIterations + "</td><td>" + materialChoice + " (Su = " + Su + ", Sy = " + Sy + ")</td><td>" + d_guessed + " " + tunit$ + "</td><td>" + fosCalculated + "</td><td>" + fos + "</td></tr>";
+			finalContainerTable.innerHTML += "<tr><td>Trial " + projIterations + "</td><td>" + materialChoice + " (Su = " + Su + ", Sy = " + Sy + ")</td><td>" + d_guessed + " " + tunit$ + "</td><td>" + largeD + " " + tunit$ + "</td><td>" + fosCalculated + "</td><td>" + fos + "</td></tr>";
 			projLoader.style.display="none";
 			ui.style.height = "20vh";
 			
