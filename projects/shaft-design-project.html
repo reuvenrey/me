@@ -189,6 +189,7 @@
 				<table id='finalResultDisplay'>
 					 <tr>
 						 <th>Iteration</th>
+						 <th>Material Selection</th>
 						 <th>Suggested Diameter</th>
 						 <th>Factor of Safety</th>
 						 <th>Desired Factor of Safety</th>
@@ -729,7 +730,7 @@
 				
 			
 			finalContainer.style.display = 'block';
-			finalContainerTable.innerHTML += "<tr><td>Trial " + projIterations + "</td><td>" + d_guessed + " " + tunit$ + "</td><td>" + fosCalculated + "</td><td>" + fos + "</td></tr>";
+			finalContainerTable.innerHTML += "<tr><td>Trial " + projIterations + "</td><td>" + materialChoice + "(Su = " + Su + ", Sy = " + Sy + ")</td><td>" + d_guessed + " " + tunit$ + "</td><td>" + fosCalculated + "</td><td>" + fos + "</td></tr>";
 			projLoader.style.display="none";
 			ui.style.height = "20vh";
 			
