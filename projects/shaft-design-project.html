@@ -68,7 +68,7 @@
 					<div>
 						<select id='unitsOfMeasure' onchange='console.log("Value: "+ this.value)'> 
 							<option value='english'>English (lb, psi, in, °F)</option>
-							<option value='standard'>Standard International (N, Pa, m, °C)</option>
+							<!--<option value='standard'>Standard International (N, Pa, m, °C)</option>-->
 						</select>
 					</div>
 					<div><p>Method<br><em style='color:gray'>Only one option for now :(</em></p></div>
@@ -183,7 +183,24 @@
 			</div>
 		</div> <!-- end of STEP ONE container -->
 
+		<div class='fullContainer' id='finalResultContainer' style='display:none; animation: fade_in 0.5s;'>
+			<div class='container'>
+				<h2>Final Results</h2>
+				<table id='finalResultDisplay'>
+					 <tr>
+						 <th>Iteration</th>
+						 <th>Suggested Diameter</th>
+						 <th>Factor of Safety</th>
+						 <th>Desired Factor of Safety</th>
+					 </tr>
+				</table>
+				<p><button onclick='runCodeAgain()' style='background:cyan'>Run Program Again (change values)</button></p>
+				<p><button onclick='expandConsoleDiv()'>View Console</button></p>
+			</div>
+		</div> <!-- end of final step container -->
 		
+		
+					
 
 <!-- STEP TWO -->
 
@@ -194,20 +211,14 @@
 	<!-- ------------------------------------------------------------------------------------------- DESIGN PROJECT CODE ----------------------------->
 
 	<script type='text/javascript' src='https://reuvenrey.github.io/me/files/project-files/shaft-design-functions.js'></script>
-	<script>
 
-	</script>
-
-
-
-
-
-
-	
 	<script>
 		// Console Container and Loader
 		//const ui = document.getElementById("projConsole"); // console: 	ui.innerHTML += "";
 		const projLoader = document.getElementById("projLoader");
+
+		const finalContainer = document.getElementById("finalResultContainer");
+		const finalContainerTable = document.getElementById("finalResultDisplay");
 
 		// User Variable Input Elements
 		const stepOneContainer = document.getElementById("stepOneContainer");
@@ -236,7 +247,7 @@
 			// Write to console
 			projIterations += 1;
 			ui.innerHTML = "<h3>Project Console - Iteration "+projIterations+"</h3>Start Program / Verifying User Inputs";
-			ui.innerHTML += "<button style='position:fixed; bottom:10px; right:20px; z-index:900;' onclick='stopCodeAbort()'>Abort Iteration</button>";
+			ui.innerHTML += "<button id='abortCodeButton' style='position:fixed; bottom:10px; right:20px; z-index:900;' onclick='stopCodeAbort()'>Abort Iteration</button>";
 
 			// Gather All Input Elements - document.getElementById("");
 				// Will use .value for variables, and .style.borderColor = "red" to signify invalid inputs
@@ -601,10 +612,24 @@
 			d_guessed = tempVarOut[0];
 			standardIndexVal = tempVarOut[1];
 
+			var isGood = 'false';
+
+			if(units == 'english'){
+				if(d_guessed > shaftDiameterIN[shaftDiameterIN.length - 1]){
+					isGood = 'true';
+					ui.innerHTML += "<p style='color:orange'>Maximum Shaft Sized Reached. Cannot expand diameter past Standard Values list.</p>";
+				}
+			}else{
+				if(d_guessed*1000 > shaftDiameterMM[shaftDiameterMM.length - 1]){
+					isGood = 'true';
+					ui.innerHTML += "<p style='color:orange'>Maximum Shaft Sized Reached. Cannot expand diameter past Standard Values list.</p>";
+				}
+			}
+
 			console.log("Standards Index Value: " + standardIndexVal);
 			
 			var whileIt = 0;
-			var isGood = 'false';
+			
 
 			var d_prev_check = 0;
 			
@@ -642,7 +667,7 @@
 								ui.innerHTML += "<p style='color:orange'>To prevent infinite loop, Diameter will remain slightly larger than requested.</p>";
 							if(d_guessed == 'NaN'){
 								// exit the loop if the diameter is larger than anything on the standards parts list
-								ui.innerHTML += "<p style='color:orange'>Reached the end of Standard Diameters -- Shaft cannot be made any <b>Larger</b> than " + d_new + "(units) </p>";
+								ui.innerHTML += "<p style='color:orange'>Reached the end of Standard Diameters -- Shaft cannot be made any <b>Larger</b> than " + tempDforError + "(units) </p>";
 								d_guessed = tempDforError;
 								isGood = 'true';
 							}
@@ -652,18 +677,13 @@
 						if($margin > 0.05){ // factor of safety is too high
 							standardIndexVal -= 1;
 							if(standardIndexVal < 0){
-								ui.innerHTML += "<p style='color:orange'>Reached the end of Standard Diameters -- Shaft cannot be made any <b>Smaller</b> than " + d_new + "(units) </p>";
+								ui.innerHTML += "<p style='color:orange'>Reached the end of Standard Diameters -- Shaft cannot be made any <b>Smaller</b> than " + tempDforError + "(units) </p>";
 							}else{
 								d_prev_check = d_guessed;
 								d_guessed = changeDval(standardIndexVal, units, d_prev_check);
 							}
 						}else{ // SUCCESS!!
 							isGood = 'true';
-							if(units == 'english'){
-								ui.innerHTML += "<p style='color:limegreen'>Diameter Successfully Determined to be " + d_guessed + " inches!! ٩(◕‿◕)۶</p>";
-							}else{
-								ui.innerHTML += "<p style='color:limegreen'>Diameter Successfully Determined to be " + d_guessed*1000 + " mm!! ٩(◕‿◕)۶</p>";
-							}
 						}
 					}
 				}else{
@@ -673,14 +693,62 @@
 					d_guessed = changeDval(standardIndexVal, units, tempDforError);
 					if(d_guessed == 'NaN'){
 						// exit the loop if the diameter is larger than anything on the standards parts list
-						ui.innerHTML += "<p style='color:orange'>Reached the end of Standard Diameters -- Shaft cannot be made any <b>Largerr</b> than " + d_new + "(units) </p>";
+						ui.innerHTML += "<p style='color:orange'>Reached the end of Standard Diameters -- Shaft cannot be made any <b>Largerr</b> than " + tempDforError + "(units) </p>";
 						d_guessed = tempDforError;
 						isGood = 'true';
 					}
 				}
 			}// end of while loop
 
+			setTimeout(finalStep,calcSpeed*2);
+		}
+
+		function finalStep(){
+			if(units == 'english'){
+				ui.innerHTML += "<p style='color:limegreen'>Diameter Successfully Determined to be " + d_guessed + " inches!! ٩(◕‿◕)۶</p>";
+			}else{
+				ui.innerHTML += "<p style='color:limegreen'>Diameter Successfully Determined to be " + d_guessed*1000 + " mm!! ٩(◕‿◕)۶</p>";
+			}		
+
+			const acb = document.getElementById("abortCodeButton");
+			acb.style.display = 'none';
+
+			var tunit$ = "inches";
+			if(units == 'standard'){tunit$ = 'mm';}
+
+				Se = determineNewSe(d_guessed, SePrime, Su, ka,kc,kd,ke, units); // will calculate new Se using new kb determined from diameter
+					
+				var tempVar = determineKfKfs(d_guessed, Su, filletRadius, Kt, Kts, units); // calculate new Kf, Kfs using diameter
+				Kf = tempVar[0];
+				Kfs = tempVar[1];
+				console.log("Returned Values: Kf = " + Kf + ", Kfs = " + Kfs);
+				vonStressA = determineVonStress(d_guessed, Kf, Kfs, momentA, torqueA, units); // calculate stresses
+				vonStressM = determineVonStress(d_guessed, Kf, Kfs, momentM, torqueM, units);
+		
+				fosCalculated = determineFOS(d_guessed, vonStressA, vonStressM, Se, Su, units); // calculate factor of safety
+				
 			
+			finalContainer.style.display = 'block';
+			finalContainerTable.innerHTML += "<tr><td>Trial " + projIterations + "</td><td>" + d_guessed + " " + tunit$ + "</td><td>" + fosCalculated + "</td><td>" + fos + "</td></tr>";
+			projLoader.style.display="none";
+			ui.style.height = "20vh";
+			
+		}
+
+		function runCodeAgain(){
+			stepOneContainer.style.display = "block";
+		}
+
+		function expandConsoleDiv(){
+			ui.style.height = '80vh';
+			ui.style.backgroundColor = "rgba(0,0,0,0.9)";
+			ui.innerHTML += "<button id='shrinkConsolBtn' style='position:fixed; bottom:10px; right:20px; z-index:900;' onclick='shrinkConsoleDiv()'>Shrink Console</button>";
+			document.getElementById("shrinkConsolBtn").style.display = 'block';
+		}
+		function shrinkConsoleDiv(){
+			ui.style.height = '20vh';
+			document.getElementById("shrinkConsolBtn").style.display = 'none';
+			ui.style.backgroundColor = "rgba(0,0,0,0.6)";
 		}
 	</script>
 
