@@ -728,9 +728,10 @@ e<!DOCTYPE html>
 				vonStressM = determineVonStress(d_guessed, Kf, Kfs, momentM, torqueM, units);
 		
 				fosCalculated = determineFOS(d_guessed, vonStressA, vonStressM, Se, Su, units); // calculate factor of safety
+				fosCalculated = fosCalculated.toFixed(3);
 
 			var largeD = Dd_ratio*d_guessed;
-			largeD = largeD.toFixed(2);
+			largeD = largeD.toFixed(3);
 			
 			finalContainer.style.display = 'block';
 			finalContainerTable.innerHTML += "<tr><td>Trial " + projIterations + "</td><td>" + materialChoice + " (Su = " + Su + ", Sy = " + Sy + ")</td><td>" + d_guessed + " " + tunit$ + "</td><td>" + largeD + " " + tunit$ + "</td><td>" + fosCalculated + "</td><td>" + fos + "</td></tr>";
