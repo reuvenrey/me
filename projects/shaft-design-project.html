@@ -186,7 +186,7 @@ e<!DOCTYPE html>
 		<div class='fullContainer' id='finalResultContainer' style='display:none; animation: fade_in 0.5s;'>
 			<div class='container'>
 				<h2>Final Results</h2>
-				<table id='finalResultDisplay'>
+				<table id='finalResultDisplay' style='color:black'>
 					 <tr>
 						 <th>Iteration</th>
 						 <th>Material Selection</th>
@@ -730,6 +730,7 @@ e<!DOCTYPE html>
 				fosCalculated = determineFOS(d_guessed, vonStressA, vonStressM, Se, Su, units); // calculate factor of safety
 
 			var largeD = Dd_ratio*d_guessed;
+			largeD = largeD.toFixed(2);
 			
 			finalContainer.style.display = 'block';
 			finalContainerTable.innerHTML += "<tr><td>Trial " + projIterations + "</td><td>" + materialChoice + " (Su = " + Su + ", Sy = " + Sy + ")</td><td>" + d_guessed + " " + tunit$ + "</td><td>" + largeD + " " + tunit$ + "</td><td>" + fosCalculated + "</td><td>" + fos + "</td></tr>";
