@@ -63,6 +63,9 @@ html {
 
 /* -- UI ELEMENTS AND DECORATION -- */
 
+	button {padding:10px; color:white; background:none; border:2px solid white; border-radius:5px; font-size:15px; transition:0.5s; min-width:200px;}
+	button:hover {background:darkcyan; cursor:pointer;}
+
  	.spacer{width:95%; max-width:1100px; margin:auto; height:1px; background:#efefef; margin-top:15px; margin-bottom:15px;}
 
 	.titleBar{width:100%; margin:0; background:white; color:black; padding:12px; text-align:left; padding-top:20px; padding-bottom:20px;}
