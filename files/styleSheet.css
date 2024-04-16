@@ -70,6 +70,9 @@ html {
 
 	.subtitleBar{width:100%; margin:0; background:#efefef; color:black; padding:12px; text-align:left;}
 
+	.banner{width:100%; margin:0; padding:0; height:80vh;}
+	.banner img{width:100%;  height:100%; object-fit:cover; margin:0;}
+
 /* -- TITLES AND UI TEXT ELEMENTS -- */
 
 	
