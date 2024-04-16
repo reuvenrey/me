@@ -37,8 +37,8 @@ html {
 	}
 
 	.columnContainer{display:flex; flex-flow:row; margin:auto; margin-top:40px; width:100%; max-width:1200px;}
-    	.columnContainer img{width:28%; margin:1%; scale:1; border-radius:10px; align-self:stretch; object-fit:cover;}
-    	.columnContainer div{width:70%; padding:0; margin:0; align-self:stretch;}
+    	.columnContainer img{width:28%; margin:2%; margin-top:0; margin-bottom:0; scale:1; border-radius:10px; align-self:stretch; object-fit:cover;}
+    	.columnContainer div{width:68%; padding:0; margin:0; align-self:stretch;}
 
 	
 	.fullContainer {
